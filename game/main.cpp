@@ -1,7 +1,10 @@
+#include <SFML/System.hpp>
+
 #include <contextmgr/contextmgr.h>
 #include <scriptarray/scriptarray.h>
 #include <scriptdictionary/scriptdictionary.h>
 #include <scriptstdstring/scriptstdstring.h>
+#include <angelscript.h>
 
 #include <chrono>
 
