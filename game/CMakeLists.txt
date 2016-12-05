@@ -17,7 +17,7 @@ if (WIN32)
 	set(SFML_MAIN main)
 endif()
 
-find_package(SFML 2 REQUIRED COMPONENTS audio graphics system windows network ${SFML_MAIN})
+find_package(SFML 2 REQUIRED COMPONENTS audio graphics system window network ${SFML_MAIN})
 find_package(Angelscript REQUIRED)
 
 include_directories(
