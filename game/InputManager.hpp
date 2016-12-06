@@ -6,6 +6,8 @@
 
 #include <unordered_map>
 
+namespace sf { class Event; }
+
 class InputManager
 {
 public:
@@ -57,11 +59,16 @@ public:
 
 	struct Input
 	{
-		float Value;
+		Input();
 
-		Bind PBind, SBind, TBind;
+		float Value, OldValue;
+
+		Bind PBind, SBind;
 
 		operator bool() const;
+
+		bool pressed() const;
+		float delta() const;
 	};
 
 	InputManager();
@@ -71,7 +78,7 @@ public:
 
 	InputManager& operator=(const InputManager&);
 
-	void pushEvent();
+	void pushEvent(const sf::Event&);
 
 	void addInput(int id);
 
