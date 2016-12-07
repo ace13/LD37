@@ -54,12 +54,58 @@ InputManager& InputManager::operator=(const InputManager& rhs)
 void InputManager::pushEvent(const sf::Event& ev)
 {
 	auto bindType = Bind::Bind_None;
+	switch (ev.type)
+	{
+	case sf::Event::KeyPressed:
+	case sf::Event::KeyReleased:
+		bindType = Bind::Bind_Key; break;
+
+	case sf::Event::JoystickMoved:
+		bindType = Bind::Bind_JAxis: break;
+
+	case sf::Event::JoystickButtonPressed:
+	case sf::Event::JoystickButtonReleased:
+		bindType = Bind::Bind_JButton; break;
+
+	case sf::Event::MouseButtonPressed:
+	case sf::Event::MouseButtonReleased:
+		bindType = Bind::Bind_MButton; break;
+
+	case sf::Event::MouseWheelScrolled:
+		bindType = Bind::Bind_MWheel; break;
+	}
 
 	if (bindType != Bind::Bind_None)
 		for (auto& inp : mInputs)
 		{
 			if (inp.Type != bindType)
 				continue;
+
+			float newVal = 0;
+			bool found = false;
+			switch (bindType)
+			{
+			case Bind::Bind_Key:
+				newVal = ev.type == sf::Event::KeyPressed;
+				found = ev.key.code == inp.Key.code;
+				break;
+
+			case Bind::Bind_JAxis:
+				newVal = abs(ev.joystickMove.position)/100.f;
+				found = ev.joystickMove.joystickId == inp.JAxis.id && ev.joystickMove.axis == inp.JAxis.axis && ((inp.JAxis.positive && ev.joystickMove.position > 0) || (!inp.JAxis.positive && ev.joystickMove.position < 0));
+				break;
+
+			case Bind::Bind_JButton:
+				newVal = ev.type == sf::Event::JoystickButtonPressed;
+				found = ev.joystickButton.joystickId == inp.JButton.id && ev.joystickButton.button == inp.JButton.button;
+				break;
+
+			case bind::Bind_MBtton:
+				newVal = ev.type == sf::Event::MouseButtonPressed;
+				found = ev.mouseButton.button == inp.MButton.button;
+				break;
+			}
+
 
 			inp.OldValue = inp.Value;
 			// inp.Value = ;
