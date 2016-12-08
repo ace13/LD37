@@ -61,7 +61,7 @@ void InputManager::pushEvent(const sf::Event& ev)
 		bindType = Bind::Bind_Key; break;
 
 	case sf::Event::JoystickMoved:
-		bindType = Bind::Bind_JAxis: break;
+		bindType = Bind::Bind_JAxis; break;
 
 	case sf::Event::JoystickButtonPressed:
 	case sf::Event::JoystickButtonReleased:
@@ -76,39 +76,60 @@ void InputManager::pushEvent(const sf::Event& ev)
 	}
 
 	if (bindType != Bind::Bind_None)
-		for (auto& inp : mInputs)
+		for (auto& it : mInputs)
 		{
-			if (inp.Type != bindType)
-				continue;
+			bool prim = false;
 
-			float newVal = 0;
-			bool found = false;
-			switch (bindType)
+			do
 			{
-			case Bind::Bind_Key:
-				newVal = ev.type == sf::Event::KeyPressed;
-				found = ev.key.code == inp.Key.code;
-				break;
+				Bind* bptr = nullptr;
+				if (prim)
+				{
+					bptr = &it.second.PBind;
+				}
+				else
+				{
+					bptr = &it.second.SBind;
+				}
 
-			case Bind::Bind_JAxis:
-				newVal = abs(ev.joystickMove.position)/100.f;
-				found = ev.joystickMove.joystickId == inp.JAxis.id && ev.joystickMove.axis == inp.JAxis.axis && ((inp.JAxis.positive && ev.joystickMove.position > 0) || (!inp.JAxis.positive && ev.joystickMove.position < 0));
-				break;
+				auto& inp = *bptr;
 
-			case Bind::Bind_JButton:
-				newVal = ev.type == sf::Event::JoystickButtonPressed;
-				found = ev.joystickButton.joystickId == inp.JButton.id && ev.joystickButton.button == inp.JButton.button;
-				break;
+				if (inp.Type != bindType)
+					continue;
 
-			case bind::Bind_MBtton:
-				newVal = ev.type == sf::Event::MouseButtonPressed;
-				found = ev.mouseButton.button == inp.MButton.button;
-				break;
-			}
+				float newVal = 0;
+				bool found = false;
+				switch (bindType)
+				{
+				case Bind::Bind_Key:
+					newVal = ev.type == sf::Event::KeyPressed;
+					found = ev.key.code == inp.Key.code;
+					break;
 
+				case Bind::Bind_JAxis:
+					newVal = abs(ev.joystickMove.position) / 100.f;
+					found = ev.joystickMove.joystickId == inp.JAxis.id && ev.joystickMove.axis == inp.JAxis.axis && ((inp.JAxis.positive && ev.joystickMove.position > 0) || (!inp.JAxis.positive && ev.joystickMove.position < 0));
+					break;
 
-			inp.OldValue = inp.Value;
-			// inp.Value = ;
+				case Bind::Bind_JButton:
+					newVal = ev.type == sf::Event::JoystickButtonPressed;
+					found = ev.joystickButton.joystickId == inp.JButton.id && ev.joystickButton.button == inp.JButton.button;
+					break;
+
+				case Bind::Bind_MButton:
+					newVal = ev.type == sf::Event::MouseButtonPressed;
+					found = ev.mouseButton.button == inp.MButton.button;
+					break;
+				}
+
+				if (found)
+				{
+					it.second.OldValue = it.second.Value;
+					it.second.Value = newVal;
+				}
+
+				prim = !prim;
+			} while (!prim);
 		}
 }
 
@@ -117,11 +138,11 @@ void InputManager::addInput(int id)
 	mInputs[id] = Input();
 }
 
-Input& InputManager::operator[](int key)
+InputManager::Input& InputManager::operator[](int key)
 {
 	return mInputs.at(key);
 }
-const Input& InputManager::operator[](int key) const
+const InputManager::Input& InputManager::operator[](int key) const
 {
 	return mInputs.at(key);
 }

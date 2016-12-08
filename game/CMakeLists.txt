@@ -1,11 +1,17 @@
 set(LD37_HEADERS
 	Application.hpp
 	InputManager.hpp
+	ScriptManager.hpp
+
+	AS_SFML.hpp
 )
 
 set(LD37_SOURCES
 	Application.cpp
 	InputManager.cpp
+	ScriptManager.cpp
+
+	AS_SFML.cpp
 
 	main.cpp
 )
