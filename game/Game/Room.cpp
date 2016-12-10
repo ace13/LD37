@@ -21,7 +21,9 @@ namespace
 		{ Room::Tile_Table, sf::Color(110, 107, 23) }
 	};
 
-	void HSVtoRGB(float& fR, float& fG, float& fB, float& fH, float& fS, float& fV) {
+	sf::Color HSVtoRGB(float fH, float fS, float fV) {
+		float fR, fG, fB;
+
 		float fC = fV * fS; // Chroma
 		float fHPrime = fmod(fH / 60.0, 6);
 		float fX = fC * (1 - fabs(fmod(fHPrime, 2) - 1));
@@ -66,6 +68,8 @@ namespace
 		fR += fM;
 		fG += fM;
 		fB += fM;
+
+		return sf::Color(fR * 255, fG * 255, fB * 255);
 	}
 }
 
@@ -189,10 +193,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			{
 				h = i * 25 + j * 38 * phi;
 
-				float r, g, b;
-				HSVtoRGB(r, g, b, h, s, v);
-
-				circ.setFillColor(sf::Color(r * 255, g * 255, b * 255));
+				circ.setFillColor(HSVtoRGB(h, s, v));
 				rt.draw(circ, states);
 				circ.move(0.1f, 0);
 			}
