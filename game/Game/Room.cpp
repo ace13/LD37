@@ -161,6 +161,8 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			toDraw = rect; break;
 
 		case Tile_Seat:
+		case Tile_Stool:
+		case Tile_Table:
 			toDraw = circ; break;
 		}
 
