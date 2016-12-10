@@ -16,10 +16,15 @@ void Player::update(float dt)
 
 	if (inp[Input_Left].pressed() && pos.x > 0)
 		--pos.x;
-	else if (inp[Input_Right].pressed() && pos.x + 1 < size.x)
+	if (inp[Input_Right].pressed() && pos.x + 1 < size.x)
 		++pos.x;
-
-	setPosition(pos);
+	if (inp[Input_Up].pressed() && pos.y > 0)
+		--pos.y;
+	if (inp[Input_Down].pressed() && pos.y + 1 < size.y)
+		++pos.y;
+	
+	if (getRoom().getTile({ uint32_t(pos.x), uint32_t(pos.y) }) == Room::Tile_Floor)
+		setPosition(pos);
 }
 void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {

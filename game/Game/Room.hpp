@@ -7,6 +7,7 @@
 
 #include <deque>
 #include <memory>
+#include <vector>
 
 namespace Game
 {
@@ -14,10 +15,25 @@ namespace Game
 class Room : public sf::Drawable, public sf::Transformable
 {
 public:
+	enum TileType : uint8_t
+	{
+		Tile_Floor,
+
+		Tile_Bar,
+		Tile_Bottles,
+		Tile_Seat,
+		Tile_Table,
+
+		Tile_Count
+	};
+
 	Room();
 
 	const sf::Vector2u& getSize() const;
 	void setSize(const sf::Vector2u& size);
+
+	TileType getTile(const sf::Vector2u& pos) const;
+	void setTile(const sf::Vector2u& pos, TileType type);
 
 	float getScale() const;
 	void setScale(float scale);
@@ -31,6 +47,8 @@ public:
 
 private:
 	sf::Vector2u mSize;
+	std::vector<TileType> mTiles;
+
 	std::deque<std::unique_ptr<Object>> mObjects;
 };
 

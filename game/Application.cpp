@@ -53,7 +53,14 @@ void Application::init(int argc, char** argv)
 
 	mRoom.setPosition({ 100, 100 });
 	mRoom.setSize({ 10, 10 });
-	mRoom.setScale(10);
+	mRoom.setScale(20);
+
+	for (unsigned int i = 0; i < 10; ++i)
+	{
+		mRoom.setTile({ i, 0 }, Game::Room::Tile_Bottles);
+		mRoom.setTile({ i, 3 }, Game::Room::Tile_Bar);
+		mRoom.setTile({ i, 4 }, Game::Room::Tile_Seat);
+	}
 
 	mWindow.create(sf::VideoMode(1280, 720), "LD37");
 }
