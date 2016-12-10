@@ -19,6 +19,53 @@ namespace
 		{ Room::Tile_Seat, sf::Color(171, 89, 16) },
 		{ Room::Tile_Table, sf::Color(110, 107, 23) }
 	};
+
+	void HSVtoRGB(float& fR, float& fG, float& fB, float& fH, float& fS, float& fV) {
+		float fC = fV * fS; // Chroma
+		float fHPrime = fmod(fH / 60.0, 6);
+		float fX = fC * (1 - fabs(fmod(fHPrime, 2) - 1));
+		float fM = fV - fC;
+
+		if (0 <= fHPrime && fHPrime < 1) {
+			fR = fC;
+			fG = fX;
+			fB = 0;
+		}
+		else if (1 <= fHPrime && fHPrime < 2) {
+			fR = fX;
+			fG = fC;
+			fB = 0;
+		}
+		else if (2 <= fHPrime && fHPrime < 3) {
+			fR = 0;
+			fG = fC;
+			fB = fX;
+		}
+		else if (3 <= fHPrime && fHPrime < 4) {
+			fR = 0;
+			fG = fX;
+			fB = fC;
+		}
+		else if (4 <= fHPrime && fHPrime < 5) {
+			fR = fX;
+			fG = 0;
+			fB = fC;
+		}
+		else if (5 <= fHPrime && fHPrime < 6) {
+			fR = fC;
+			fG = 0;
+			fB = fX;
+		}
+		else {
+			fR = 0;
+			fG = 0;
+			fB = 0;
+		}
+
+		fR += fM;
+		fG += fM;
+		fB += fM;
+	}
 }
 
 Room::Room()
@@ -85,7 +132,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 
-	auto circ = sf::CircleShape(5, 8);
+	auto circ = sf::CircleShape(5, 16);
 	circ.setFillColor(sf::Color::White);
 	circ.setScale(0.1f, 0.1f);
 	auto rect = sf::RectangleShape(sf::Vector2f{ float(mSize.x), float(mSize.y) });
@@ -115,6 +162,41 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		toDraw.setPosition(x, y);
 		rt.draw(rect, states);
 
+		switch (tile)
+		{
+		case Tile_Bottles: {
+			rect.setScale(0.1f, 0.1f);
+
+			rect.setFillColor(sf::Color(75, 70, 70));
+			rect.setSize({ 10, 2 });
+			rt.draw(rect, states);
+			rect.setSize({ 1, 1 });
+			rect.setScale(1.f, 1.f);
+
+			const float phi = 1.618033988;
+			float h, s, v;
+			s = 0.9f;
+			v = 0.7f;
+
+			circ.setScale(0.01f, 0.01f);
+			circ.setPosition(x, y);
+
+			circ.move(0.1f, 0.2f);
+			for (int j = 0; j < 8; ++j)
+			{
+				h = i * 25 + j * 38 * phi;
+
+				float r, g, b;
+				HSVtoRGB(r, g, b, h, s, v);
+
+				circ.setFillColor(sf::Color(r * 255, g * 255, b * 255));
+				rt.draw(circ, states);
+				circ.move(0.1f, 0);
+			}
+
+			circ.setScale(0.1f, 0.1f);
+		} break;
+		}
 	}
 
 	for (auto& ptr : mObjects)

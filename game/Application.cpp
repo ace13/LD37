@@ -53,7 +53,7 @@ void Application::init(int argc, char** argv)
 
 	mRoom.setPosition({ 100, 100 });
 	mRoom.setSize({ 10, 10 });
-	mRoom.setScale(20);
+	mRoom.setScale(25);
 
 	for (unsigned int i = 0; i < 10; ++i)
 	{
@@ -61,6 +61,11 @@ void Application::init(int argc, char** argv)
 		mRoom.setTile({ i, 3 }, Game::Room::Tile_Bar);
 		mRoom.setTile({ i, 4 }, Game::Room::Tile_Seat);
 	}
+
+	mRoom.setTile({ 6, 0 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 7, 0 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 8, 0 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 9, 0 }, Game::Room::Tile_Bar);
 
 	mWindow.create(sf::VideoMode(1280, 720), "LD37");
 }
