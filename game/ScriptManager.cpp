@@ -29,6 +29,16 @@ int includeFile(const char *include, const char *from, CScriptBuilder *builder, 
 	return builder->AddSectionFromFile(target.c_str());
 }
 
+void MessageCallback(const asSMessageInfo *msg, void *param)
+{
+	const char *type = "ERR ";
+	if (msg->type == asMSGTYPE_WARNING)
+		type = "WARN";
+	else if (msg->type == asMSGTYPE_INFORMATION)
+		type = "INFO";
+	printf("%s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
+}
+
 ScriptManager::ScriptManager()
 	: mScriptEngine(nullptr)
 {
@@ -42,6 +52,7 @@ ScriptManager::~ScriptManager()
 void ScriptManager::init()
 {
 	mScriptEngine = asCreateScriptEngine(ANGELSCRIPT_VERSION);
+	mScriptEngine->SetMessageCallback(asFUNCTION(MessageCallback), nullptr, asCALL_CDECL);
 
 	RegisterStdString(mScriptEngine);
 	RegisterScriptArray(mScriptEngine, true);
