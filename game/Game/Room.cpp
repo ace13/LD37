@@ -11,7 +11,7 @@ using namespace Game;
 
 namespace
 {
-	static std::unordered_map<Room::TileType, sf::Color> TileColors = {
+	static std::unordered_map<uint8_t, sf::Color> TileColors = {
 		{ Room::Tile_Floor, sf::Color(0,0,0,0) },
 
 		{ Room::Tile_Bar, sf::Color(110, 107, 23) },
