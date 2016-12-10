@@ -2,6 +2,8 @@
 
 #include <contextmgr/contextmgr.h>
 
+#include <string>
+
 class ScriptManager
 {
 public:
