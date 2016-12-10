@@ -17,6 +17,7 @@ namespace
 		{ Room::Tile_Bar, sf::Color(110, 107, 23) },
 		{ Room::Tile_Bottles, sf::Color(110, 107, 23) },
 		{ Room::Tile_Seat, sf::Color(171, 89, 16) },
+		{ Room::Tile_Stool, sf::Color(171, 89, 16) },
 		{ Room::Tile_Table, sf::Color(110, 107, 23) }
 	};
 
@@ -132,9 +133,10 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 
-	auto circ = sf::CircleShape(5, 16);
+	auto circ = sf::CircleShape(4, 16);
 	circ.setFillColor(sf::Color::White);
 	circ.setScale(0.1f, 0.1f);
+	circ.setOrigin({ -1.f, -1.f });
 	auto rect = sf::RectangleShape(sf::Vector2f{ float(mSize.x), float(mSize.y) });
 	rect.setFillColor(sf::Color::White);
 	rt.draw(rect, states);
@@ -178,6 +180,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			s = 0.9f;
 			v = 0.7f;
 
+			circ.setOrigin({ 0.f, 0.f });
 			circ.setScale(0.01f, 0.01f);
 			circ.setPosition(x, y);
 
@@ -194,6 +197,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 				circ.move(0.1f, 0);
 			}
 
+			circ.setOrigin({ -1.f, -1.f });
 			circ.setScale(0.1f, 0.1f);
 		} break;
 		}

@@ -57,6 +57,9 @@ void Application::init(int argc, char** argv)
 
 	for (unsigned int i = 0; i < 10; ++i)
 	{
+		if (i == 7)
+			continue;
+
 		mRoom.setTile({ i, 0 }, Game::Room::Tile_Bottles);
 		mRoom.setTile({ i, 3 }, Game::Room::Tile_Bar);
 		mRoom.setTile({ i, 4 }, Game::Room::Tile_Seat);
