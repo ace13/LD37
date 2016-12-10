@@ -77,7 +77,8 @@ public:
 	~InputManager();
 
 	InputManager& operator=(const InputManager&);
-
+	
+	void tick();
 	void pushEvent(const sf::Event&);
 
 	void addInput(int id);

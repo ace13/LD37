@@ -51,6 +51,12 @@ InputManager& InputManager::operator=(const InputManager& rhs)
 	return *this;
 }
 
+void InputManager::tick()
+{
+	for (auto& it : mInputs)
+		it.second.OldValue = it.second.Value;
+}
+
 void InputManager::pushEvent(const sf::Event& ev)
 {
 	auto bindType = Bind::Bind_None;
@@ -84,13 +90,11 @@ void InputManager::pushEvent(const sf::Event& ev)
 			{
 				Bind* bptr = nullptr;
 				if (prim)
-				{
 					bptr = &it.second.PBind;
-				}
 				else
-				{
 					bptr = &it.second.SBind;
-				}
+
+				prim = !prim;
 
 				auto& inp = *bptr;
 
@@ -123,13 +127,9 @@ void InputManager::pushEvent(const sf::Event& ev)
 				}
 
 				if (found)
-				{
-					it.second.OldValue = it.second.Value;
 					it.second.Value = newVal;
-				}
 
-				prim = !prim;
-			} while (!prim);
+			} while (prim);
 		}
 }
 

@@ -1,23 +1,34 @@
 set(LD37_HEADERS
+	AS_SFML.hpp
+
 	Application.hpp
 	InputManager.hpp
+	Inputs.hpp
 	ScriptManager.hpp
 
-	AS_SFML.hpp
+	Game/Object.hpp
+	Game/Player.hpp
+	Game/Room.hpp
 )
 
 set(LD37_SOURCES
+	AS_SFML.cpp
+
 	Application.cpp
 	InputManager.cpp
 	ScriptManager.cpp
-
-	AS_SFML.cpp
+	
+	Game/Object.cpp
+	Game/Player.cpp
+	Game/Room.cpp
 
 	main.cpp
 )
 
 source_group("Header files\\" REGULAR_EXPRESSION "[^./]+.(hpp|inl)")
 source_group("Source files\\" REGULAR_EXPRESSION "[^./]+.cpp")
+source_group("Header files\\Game" REGULAR_EXPRESSION "Game/[^./]+.(hpp|inl)")
+source_group("Source files\\Game" REGULAR_EXPRESSION "Game/[^./]+.cpp")
 
 if (WIN32)
 	set(SFML_MAIN main)
