@@ -1,4 +1,5 @@
 #include "Patron.hpp"
+#include "Player.hpp"
 
 #include "../Application.hpp"
 
@@ -25,23 +26,26 @@ Patron::Patron()
 
 void Patron::update(float dt)
 {
-	mOrderTime -= dt / mPatience;
-	
-	if (mOrderTime < 0 && mOrder)
-	{
-		// Cost player
-		mOrder.reset(nullptr);
-		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
-	}
-
 	if (mOrder)
-		return;
-
-	mOrderCooldown -= dt;
-	if (mOrderCooldown < 0)
 	{
-		mOrderTime = kOrderTime;
-		mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())));
+		mOrderTime -= dt / (mPatience + (mOrder->getType() == Drink_Water));
+
+		if (mOrderTime < 0 && mOrder)
+		{
+			getRoom().getPlayer()->costMoney(mOrder.get());
+
+			mOrder.reset(nullptr);
+			mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
+		}
+	}
+	else
+	{
+		mOrderCooldown -= dt;
+		if (mOrderCooldown < 0)
+		{
+			mOrderTime = kOrderTime;
+			mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())));
+		}
 	}
 }
 
@@ -134,6 +138,12 @@ float Patron::getTip(const Drink* drink)
 {
 	const float price = drink->getCost();
 	const float maxTip = price * 0.10f * (0.5f + (mPatience / 2.f));
+
+	if (mOrderTime <= 5)
+	{
+		const float anger = (5.f - mOrderTime) / 5.f;
+		return maxTip * (1.f - anger);
+	}
 
 	return maxTip;
 }

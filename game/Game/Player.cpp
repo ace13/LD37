@@ -8,6 +8,12 @@
 
 using namespace Game;
 
+Player::Player()
+	: mMoney(100)
+{
+
+}
+
 void Player::update(float dt)
 {
 	auto& inp = Application::getApplication()->getInputManager();
@@ -42,7 +48,7 @@ void Player::update(float dt)
 	{
 		if (tile == Room::Tile_Sink)
 		{
-			mMoney -= mCarried->getCost();
+			costMoney(mCarried.get());
 			mCarried.reset(nullptr);
 		}
 		else if (tile == Room::Tile_Seat || tile == Room::Tile_Stool)
@@ -89,6 +95,11 @@ void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 
 		rt.draw(drink, states);
 	}
+}
+
+void Player::costMoney(const Drink* drink)
+{
+	mMoney -= drink->getCost();
 }
 
 float Player::getMoney() const

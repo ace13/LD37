@@ -11,11 +11,12 @@ namespace Game
 class Player : public Object
 {
 public:
-	Player() = default;
+	Player();
 
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 	
+	void costMoney(const Drink* drink);
 	float getMoney() const;
 
 private:

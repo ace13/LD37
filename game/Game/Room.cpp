@@ -53,6 +53,16 @@ void Room::setSize(const sf::Vector2u& size)
 	mTiles.resize(size.x * size.y);
 	setOrigin(size.x / 2, size.y / 2);
 }
+Player* Room::getPlayer() const
+{
+	for (auto& obj : mObjects)
+	{
+		auto* ply = dynamic_cast<Player*>(obj.get());
+		if (ply)
+			return ply;
+	}
+	return nullptr;
+}
 Object* Room::getObject(const sf::Vector2u& pos) const
 {
 	for (auto& obj : mObjects)
