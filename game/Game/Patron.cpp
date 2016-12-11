@@ -132,7 +132,7 @@ void Patron::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
 			const float anger = (5.f - mOrderTime) / 5.f;
 			sf::Color col = sf::Color::Black;
 			col.r = anger * 255;
-			exclamation.setFillColor(col);
+			exclamation.setColor(col);
 
 			const float time = Application::getApplication()->getTime() * anger * 10;
 			exclamation.move(cos(time + 45) * anger * 0.05f, sin(time) * anger * 0.05f);
