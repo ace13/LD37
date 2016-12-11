@@ -16,6 +16,7 @@ public:
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
 private:
+	float mTime;
 	Room* mRoom;
 };
 
