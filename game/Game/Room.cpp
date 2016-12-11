@@ -172,14 +172,16 @@ void Room::update(float dt)
 
 	if (mClock >= 60 * 8)
 	{
-		depopulate();
-		resetClock();
-		mStarted = false;
-
 		if (getPlayer()->getMoney() <= 0)
 			Application::getApplication()->setState(Application::State_End);
 		else
+		{
 			getPlayer()->newDay();
+
+			depopulate();
+			resetClock();
+			mStarted = false;
+		}
 	}
 
 	for (auto& ptr : mObjects)
