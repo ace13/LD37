@@ -2,6 +2,8 @@
 
 using namespace Game;
 
+std::random_device Object::mRandom;
+
 sf::Color Object::HSVtoRGB(float fH, float fS, float fV) {
 	float fR, fG, fB;
 
