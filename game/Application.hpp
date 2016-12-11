@@ -4,6 +4,7 @@
 #include "Game/Room.hpp"
 
 #include "InputManager.hpp"
+//#include "ParticleManager.hpp"
 //#include "ScriptManager.hpp"
 
 #include <SFML/Graphics/Font.hpp>
@@ -42,6 +43,7 @@ public:
 
 private:
 	InputManager mInputs;
+//	ParticleManager mParticles;
 //	ScriptManager mScripts;
 	sf::RenderWindow mWindow;
 	sf::Font mDefaultFont;

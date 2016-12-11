@@ -4,7 +4,7 @@ set(LD37_HEADERS
 	Application.hpp
 	InputManager.hpp
 	Inputs.hpp
-	ParticleManager.hpp
+#	ParticleManager.hpp
 #	ScriptManager.hpp
 
 	Game/Drink.hpp
@@ -20,7 +20,7 @@ set(LD37_SOURCES
 
 	Application.cpp
 	InputManager.cpp
-	ParticleManager.cpp
+#	ParticleManager.cpp
 #	ScriptManager.cpp
 	
 	Game/Drink.cpp
@@ -42,7 +42,7 @@ if (WIN32)
 	set(SFML_MAIN main)
 endif()
 
-find_package(SFML 2 REQUIRED COMPONENTS audio graphics system window ${SFML_MAIN})
+find_package(SFML 2 REQUIRED COMPONENTS graphics system window ${SFML_MAIN})
 #find_package(Angelscript REQUIRED)
 
 include_directories(
