@@ -12,21 +12,23 @@ void Player::update(float dt)
 {
 	auto& inp = Application::getApplication()->getInputManager();
 
-	auto pos = getPosition();
 	auto& size = getRoom().getSize();
+	sf::Vector2u pos = sf::Vector2u(getPosition());
+	sf::Vector2u delta;
 
 	if (inp[Input_Left].pressed() && pos.x > 0)
-		--pos.x;
+		--delta.x;
 	if (inp[Input_Right].pressed() && pos.x + 1 < size.x)
-		++pos.x;
+		++delta.x;
 	if (inp[Input_Up].pressed() && pos.y > 0)
-		--pos.y;
+		--delta.y;
 	if (inp[Input_Down].pressed() && pos.y + 1 < size.y)
-		++pos.y;
+		++delta.y;
 	
-	auto tile = getRoom().getTile({ uint32_t(pos.x), uint32_t(pos.y) });
+	auto newPos = pos + delta;
+	auto tile = getRoom().getTile({ newPos.x, newPos.y });
 	if (tile == Room::Tile_Floor)
-		setPosition(pos);
+		setPosition(sf::Vector2f(newPos));
 	else if (!mCarried)
 	{
 		if (tile == Room::Tile_Bottles)
@@ -42,14 +44,17 @@ void Player::update(float dt)
 			mCarried.reset(nullptr);
 		else if (tile == Room::Tile_Seat || tile == Room::Tile_Stool)
 		{
-			auto* target = dynamic_cast<Patron*>(getRoom().getObject(sf::Vector2u(pos)));
+			auto* target = dynamic_cast<Patron*>(getRoom().getObject(newPos));
 			
 			if (target && target->getOrder().getType() == mCarried->getType())
 				mCarried.reset(nullptr);
 		}
 		else if (tile == Room::Tile_Bar || tile == Room::Tile_Table)
 		{
-			// TODO: Delta * 2
+			auto* target = dynamic_cast<Patron*>(getRoom().getObject(pos + delta * 2u));
+			
+			if (target && target->getOrder().getType() == mCarried->getType())
+				mCarried.reset(nullptr);
 		}
 	}
 }
