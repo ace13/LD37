@@ -53,7 +53,7 @@ void Application::init(int argc, char** argv)
 		{ sf::Keyboard::S }
 	};
 
-	mRoom.setPosition({ 400, 400 });
+	mRoom.setPosition({ 375, 370 });
 	mRoom.setSize({ 10, 10 });
 	mRoom.setScale(50);
 
@@ -76,7 +76,25 @@ void Application::init(int argc, char** argv)
 
 	{
 		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(0, 4);
+		pat.setRotation(-90);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
 		pat.setPosition(2, 4);
+		pat.setRotation(-90);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(4, 4);
+		pat.setRotation(-90);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(6, 4);
 		pat.setRotation(-90);
 	}
 
@@ -85,8 +103,17 @@ void Application::init(int argc, char** argv)
 		pat.setPosition(8, 4);
 		pat.setRotation(-90);
 	}
+	
+	uint32_t aaLevel = 0;
+	for (int i = 1; i < argc; ++i)
+	{
+		std::string arg = argv[i];
 
-	mWindow.create(sf::VideoMode(1280, 720), "LD37");
+		if (arg == "-a")
+			aaLevel = 8;
+	}
+
+	mWindow.create(sf::VideoMode(1280, 720), "LD37", 7U, sf::ContextSettings(0, 0, aaLevel));
 }
 
 void Application::run()

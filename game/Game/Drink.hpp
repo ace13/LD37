@@ -11,6 +11,8 @@ enum DrinkType
 	Drink_Beer,
 	Drink_Cocktail,
 	Drink_Water,
+
+	Drink_Count
 };
 
 class Drink : public sf::Drawable, public sf::Transformable
@@ -22,7 +24,7 @@ public:
 
 private:
 	DrinkType mType;
-	float mHue;
+	float mHue, mVal;
 };
 
 }

@@ -16,7 +16,8 @@ Patron::Patron()
 	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mHairHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mOrderTime(1)
-	, mOrder(Drink_Cocktail)
+	, mOrder(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())))
+	, mOffset(std::uniform_real_distribution<float>(0, 10)(std::random_device()))
 {
 	setOrigin(0.5f, 0.5f);
 }
@@ -82,7 +83,7 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		drink.setPosition(0.75f, -1.f);
 		drink.setScale(0.5f, 0.5f);
 
-		drink.setRotation(11.25 * cos(Application::getApplication()->getTime()));
+		drink.setRotation(11.25 * cos(mOffset +  Application::getApplication()->getTime()));
 
 		rt.draw(drink, states);
 	}

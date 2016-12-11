@@ -20,6 +20,8 @@ private:
 	      mHairHue,
 	      mOrderTime;
 
+	float mOffset;
+
 	Drink mOrder;
 
 };
