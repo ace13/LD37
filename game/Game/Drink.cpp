@@ -11,8 +11,8 @@ using namespace Game;
 
 Drink::Drink(DrinkType type)
 	: mType(type)
-	, mHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
-	, mVal(std::uniform_real_distribution<float>(0.1f, 0.8f)(std::random_device()))
+	, mHue(std::uniform_real_distribution<float>(0, 360)(Object::Random()))
+	, mVal(std::uniform_real_distribution<float>(0.1f, 0.8f)(Object::Random()))
 {
 	switch (mType)
 	{
@@ -20,10 +20,10 @@ Drink::Drink(DrinkType type)
 		mCost = 0.1; break;
 
 	case Drink_Beer:
-		mCost = std::uniform_real_distribution<float>(5, 40)(std::random_device()); break;
+		mCost = std::uniform_real_distribution<float>(5, 40)(Object::Random()); break;
 
 	case Drink_Cocktail:
-		mCost = std::uniform_real_distribution<float>(2, 60)(std::random_device()); break;
+		mCost = std::uniform_real_distribution<float>(2, 60)(Object::Random()); break;
 	}
 }
 

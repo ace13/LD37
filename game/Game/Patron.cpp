@@ -14,12 +14,12 @@
 using namespace Game;
 
 Patron::Patron()
-	: mPatience(std::uniform_real_distribution<float>(1, 5)(std::random_device()))
-	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
-	, mHairHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
+	: mPatience(std::uniform_real_distribution<float>(1, 5)(Random()))
+	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(Random()))
+	, mHairHue(std::uniform_real_distribution<float>(0, 360)(Random()))
 	, mOrderTime(0)
-	, mOrderCooldown(std::uniform_real_distribution<float>(1, 20)(std::random_device()))
-	, mOffset(std::uniform_real_distribution<float>(0, 10)(std::random_device()))
+	, mOrderCooldown(std::uniform_real_distribution<float>(1, 20)(Random()))
+	, mOffset(std::uniform_real_distribution<float>(0, 10)(Random()))
 {
 	setOrigin(0.5f, 0.5f);
 }
@@ -37,7 +37,7 @@ void Patron::update(float dt)
 			getRoom().getPlayer()->costMoney(mOrder.get(), this);
 
 			mOrder.reset(nullptr);
-			mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
+			mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(Random());
 		}
 	}
 	else
@@ -46,7 +46,7 @@ void Patron::update(float dt)
 		if (mOrderCooldown < 0)
 		{
 			mOrderTime = kOrderTime;
-			mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())));
+			mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(Random())));
 		}
 	}
 }
@@ -161,7 +161,7 @@ void Patron::giveOrder(const Drink* drink)
 	if (mOrder && drink && mOrder->getType() == drink->getType())
 	{
 		mOrder.reset(nullptr);
-		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
+		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(Random());
 	}
 }
 

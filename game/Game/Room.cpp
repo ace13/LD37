@@ -115,7 +115,7 @@ void Room::repopulate()
 	const auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
 	const auto maxSeats = 3 * (seats / 4);
 
-	auto toFill = std::uniform_int_distribution<int>(1, maxSeats)(std::random_device());
+	auto toFill = std::uniform_int_distribution<int>(1, maxSeats)(Object::Random());
 
 	auto xDist = std::uniform_int_distribution<int>(0, mSize.x);
 	auto yDist = std::uniform_int_distribution<int>(0, mSize.y);
@@ -125,7 +125,7 @@ void Room::repopulate()
 		sf::Vector2u pos;
 		do
 		{
-			pos = sf::Vector2u(xDist(std::random_device()), yDist(std::random_device()));
+			pos = sf::Vector2u(xDist(Object::Random()), yDist(Object::Random()));
 			const auto tile = getTile(pos);
 			if ((tile == Tile_Seat || tile == Tile_Stool) && !getObject(pos))
 				break;

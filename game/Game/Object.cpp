@@ -53,6 +53,11 @@ sf::Color Object::HSVtoRGB(float fH, float fS, float fV) {
 	return sf::Color(fR * 255, fG * 255, fB * 255);
 }
 
+std::random_device& Object::Random()
+{
+	return mRandom;
+}
+
 void Object::setRoom(Room* room)
 {
 	mRoom = room;
