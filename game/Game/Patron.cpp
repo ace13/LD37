@@ -155,12 +155,12 @@ int Patron::getMissedOrders() const
 float Patron::getTip(const Drink* drink) const
 {
 	const float price = drink->getCost();
-	const float maxTip = (price * 0.10f * (0.5f + (mPatience / 2.f))) / (mMissedOrders + 1);
+	const float maxTip = (price * 0.05f) / (mMissedOrders + 1);
 
 	if (mOrderTime <= 5)
 	{
 		const float anger = (5.f - mOrderTime) / 5.f;
-		return maxTip * (1.f - anger);
+		return maxTip * (0.75f - anger);
 	}
 
 	return maxTip;

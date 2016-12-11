@@ -41,7 +41,7 @@ namespace
 
 Room::Room()
 	: mStarted(false)
-	, mClock(-60)
+	, mClock(-30)
 	, mPopulateCD(0)
 {
 	auto* ply = addObject<Player>();
@@ -122,12 +122,12 @@ void Room::repopulate()
 
 		return (t == Tile_Seat || t == Tile_Stool) && !getObject({ x, y });
 	});
-	const auto maxSeats = 3 * (seats / 4);
+	const auto maxSeats = 1 * (seats / 4);
 	
 	if (maxSeats <= 1)
 		return;
 
-	auto toFill = std::uniform_int_distribution<int>(!mStarted, maxSeats)(Object::Random());
+	auto toFill = std::uniform_int_distribution<int>(0, maxSeats)(Object::Random());
 
 	auto xDist = std::uniform_int_distribution<int>(0, mSize.x);
 	auto yDist = std::uniform_int_distribution<int>(0, mSize.y);
@@ -179,9 +179,8 @@ void Room::update(float dt)
 
 	if (!mStarted && mClock >= 0)
 	{
-		repopulate();
 		mStarted = true;
-		mPopulateCD = std::uniform_real_distribution<float>(15, 60)(Object::Random());
+		mPopulateCD = 0;
 	}
 
 	if (mStarted)
@@ -190,7 +189,7 @@ void Room::update(float dt)
 	if (mPopulateCD < 0)
 	{
 		repopulate();
-		mPopulateCD = std::uniform_real_distribution<float>(15, 60)(Object::Random());
+		mPopulateCD = std::uniform_real_distribution<float>(5, 15)(Object::Random());
 	}
 
 	if (mClock >= 60 * 8)
