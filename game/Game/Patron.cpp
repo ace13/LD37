@@ -1,5 +1,7 @@
 #include "Patron.hpp"
 
+#include "../Application.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -14,6 +16,7 @@ Patron::Patron()
 	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mHairHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mOrderTime(1)
+	, mOrder(Drink_Cocktail)
 {
 	setOrigin(0.5f, 0.5f);
 }
@@ -74,6 +77,13 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		bubble.setFillColor(sf::Color::White);
 		rt.draw(bubble, states);
 
-		// TODO: Draw order
+		Drink drink(mOrder);
+		drink.setOrigin(0.5f, 0.5f);
+		drink.setPosition(0.75f, -1.f);
+		drink.setScale(0.5f, 0.5f);
+
+		drink.setRotation(11.25 * cos(Application::getApplication()->getTime()));
+
+		rt.draw(drink, states);
 	}
 }

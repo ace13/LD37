@@ -182,7 +182,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			circ.move(0.1f, 0.2f);
 			for (int j = 0; j < 8; ++j)
 			{
-				h = i * 25 + j * 38 * phi;
+				h = i * 195 + j * 62 * phi;
 
 				circ.setFillColor(Object::HSVtoRGB(h, s, v));
 				rt.draw(circ, states);

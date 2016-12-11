@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Object.hpp"
+#include "Drink.hpp"
 
 namespace Game
 {
@@ -19,7 +20,7 @@ private:
 	      mHairHue,
 	      mOrderTime;
 
-	int mOrder;
+	Drink mOrder;
 
 };
 
