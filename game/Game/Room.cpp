@@ -120,7 +120,7 @@ void Room::repopulate()
 		const uint32_t x = j % mSize.x,
 		               y = j / mSize.x;
 
-		return (t == Tile_Seat || t == Tile_Stool) && !getObject({ x, y });
+		return (t == Tile_Seat || t == Tile_Stool) && !this->getObject(sf::Vector2u{ x, y });
 	});
 	const auto maxSeats = 1 * (seats / 4);
 	
@@ -370,7 +370,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 
 	if (mClock < 0)
 	{
-		sprintf(text, "Time left: %02i", int(abs(mClock / 2)));
+		sprintf(text, "Time until opening: %02i", int(abs(mClock / 2)));
 	}
 	else
 		sprintf(text, "%02i:%02i", (18 + (int(mClock) / 60)) % 24, (int(mClock) % 60));
