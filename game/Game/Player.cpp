@@ -118,7 +118,7 @@ void Player::costMoney(const Drink* drink, const Object* source)
 	auto* patron = dynamic_cast<const Patron*>(source);
 	if (patron)
 	{
-		mMoney -= drink->getCost() / 4.f;
+		mMoney -= (drink->getCost() / 2.f) * patron->getMissedOrders();
 		mDrinksMissed++;
 	}
 	else

@@ -22,6 +22,7 @@ public:
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 	void drawPost(sf::RenderTarget& rt, sf::RenderStates states) const;
 
+	int getMissedOrders() const;
 	float getTip(const Drink*) const;
 
 	void giveOrder(const Drink*);
@@ -35,6 +36,7 @@ private:
 	      mOrderCooldown;
 
 	float mOffset;
+	int mMissedOrders;
 
 	std::unique_ptr<Drink> mOrder;
 

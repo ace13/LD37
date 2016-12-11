@@ -20,6 +20,7 @@ Patron::Patron()
 	, mOrderTime(0)
 	, mOrderCooldown(std::uniform_real_distribution<float>(1, 20)(Random()))
 	, mOffset(std::uniform_real_distribution<float>(0, 10)(Random()))
+	, mMissedOrders(0)
 {
 	setOrigin(0.5f, 0.5f);
 }
@@ -33,6 +34,7 @@ void Patron::update(float dt)
 		if (mOrderTime < 0 && mOrder)
 		{
 			mOrderTime = 6;
+			mMissedOrders++;
 
 			getRoom().getPlayer()->costMoney(mOrder.get(), this);
 
@@ -142,10 +144,15 @@ void Patron::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
 	}
 }
 
+int Patron::getMissedOrders() const
+{
+	return mMissedOrders;
+}
+
 float Patron::getTip(const Drink* drink) const
 {
 	const float price = drink->getCost();
-	const float maxTip = price * 0.10f * (0.5f + (mPatience / 2.f));
+	const float maxTip = (price * 0.10f * (0.5f + (mPatience / 2.f))) / (mMissedOrders + 1);
 
 	if (mOrderTime <= 5)
 	{
