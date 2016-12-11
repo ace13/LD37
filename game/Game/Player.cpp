@@ -83,9 +83,14 @@ void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	rect.setFillColor(sf::Color::Blue);
 
 	rt.draw(rect, states);
+}
 
+void Player::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
+{
 	if (mCarried)
 	{
+		states.transform *= getTransform();
+
 		auto& drink = *mCarried;
 
 		drink.setOrigin(0.5f, 0.5f);

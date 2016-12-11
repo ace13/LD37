@@ -1,5 +1,6 @@
 #include "Room.hpp"
 #include "Player.hpp"
+#include "Patron.hpp"
 
 #include "../Application.hpp"
 
@@ -7,6 +8,9 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
+
+#include <algorithm>
+#include <random>
 
 using namespace Game;
 
@@ -91,6 +95,32 @@ void Room::setTile(const sf::Vector2u& pos, TileType type)
 		mTiles[i] = type;
 	}
 }
+
+void Room::repopulate()
+{
+	auto it = std::remove_if(mObjects.begin(), mObjects.end(), [](auto& obj) { return dynamic_cast<Patron*>(obj.get()); });
+	if (it != mObjects.end())
+		mObjects.erase(it, mObjects.end());
+
+	auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
+	auto toFill = std::uniform_int_distribution<int>(1, seats)(std::random_device());
+
+	auto xDist = std::uniform_int_distribution<int>(0, mSize.x);
+	auto yDist = std::uniform_int_distribution<int>(0, mSize.y);
+
+	for (int i = 0; i < toFill; ++i)
+	{
+		sf::Vector2u pos;
+		do
+		{
+			pos = sf::Vector2u(xDist(std::random_device()), yDist(std::random_device()));
+		} while (getTile(pos) != Tile_Seat && getTile(pos) != Tile_Stool && !getObject(pos));
+
+		auto* patron = addObject<Patron>();
+		patron->setPosition(sf::Vector2f(pos));
+	}
+}
+
 float Room::getScale() const
 {
 	return sf::Transformable::getScale().x;
@@ -249,6 +279,11 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates baseState) const
 	{
 		if (ptr)
 			rt.draw(*ptr, states);
+	}
+	for (auto& ptr : mObjects)
+	{
+		if (ptr)
+			ptr->drawPost(rt, states);
 	}
 
 

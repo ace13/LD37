@@ -82,10 +82,10 @@ void Application::init(int argc, char** argv)
 	};
 
 	mRoom.setPosition({ 350, 350 });
-	mRoom.setSize({ 10, 10 });
+	mRoom.setSize({ 12, 12 });
 	mRoom.setScale(50);
 
-	for (unsigned int i = 0; i < 10; ++i)
+	for (unsigned int i = 0; i < 12; ++i)
 	{
 		if (i == 7)
 			continue;
@@ -95,17 +95,34 @@ void Application::init(int argc, char** argv)
 		mRoom.setTile({ i, 4 }, Game::Room::Tile_Stool);
 	}
 
+	mRoom.setTile({ 0, 0 }, Game::Room::Tile_Bar);
 	mRoom.setTile({ 4, 0 }, Game::Room::Tile_Sink);
 	mRoom.setTile({ 5, 0 }, Game::Room::Tile_Taps);
 	mRoom.setTile({ 6, 0 }, Game::Room::Tile_Taps);
 	mRoom.setTile({ 7, 0 }, Game::Room::Tile_Taps);
-	mRoom.setTile({ 8, 0 }, Game::Room::Tile_Bar);
-	mRoom.setTile({ 9, 0 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 8, 0 }, Game::Room::Tile_Taps);
+	mRoom.setTile({ 9, 0 }, Game::Room::Tile_Sink);
 
-	mRoom.setTile({ 1, 8 }, Game::Room::Tile_Table);
-	mRoom.setTile({ 0, 8 }, Game::Room::Tile_Seat);
-	mRoom.setTile({ 1, 9 }, Game::Room::Tile_Seat);
+	mRoom.setTile({ 1, 6 }, Game::Room::Tile_Stool);
+	mRoom.setTile({ 0, 7 }, Game::Room::Tile_Stool);
+	mRoom.setTile({ 1, 7 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 1, 8 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 1, 9 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 1, 10 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 0, 8 }, Game::Room::Tile_Stool);
+	mRoom.setTile({ 0, 9 }, Game::Room::Tile_Stool);
+	mRoom.setTile({ 0, 10 }, Game::Room::Tile_Stool);
+	mRoom.setTile({ 1, 11 }, Game::Room::Tile_Stool);
 
+	mRoom.setTile({ 10, 10 }, Game::Room::Tile_Table);
+	mRoom.setTile({ 11, 10 }, Game::Room::Tile_Seat);
+	mRoom.setTile({ 10, 11 }, Game::Room::Tile_Seat);
+	mRoom.setTile({ 9, 10 }, Game::Room::Tile_Seat);
+	mRoom.setTile({ 10, 9 }, Game::Room::Tile_Seat);
+
+	mRoom.repopulate();
+	
+	/*
 	{
 		auto& pat = *mRoom.addObject<Game::Patron>();
 		pat.setPosition(0, 4);
@@ -147,6 +164,7 @@ void Application::init(int argc, char** argv)
 		pat.setPosition(1, 9);
 		pat.setRotation(-90);
 	}
+	*/
 	
 	uint32_t aaLevel = 0;
 	for (int i = 1; i < argc; ++i)

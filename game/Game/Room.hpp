@@ -43,6 +43,8 @@ public:
 	TileType getTile(const sf::Vector2u& pos) const;
 	void setTile(const sf::Vector2u& pos, TileType type);
 
+	void repopulate();
+
 	float getScale() const;
 	void setScale(float scale);
 	void scale(float scale);

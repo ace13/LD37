@@ -16,6 +16,7 @@ public:
 
 	virtual void update(float dt) = 0;
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates states) const = 0;
+	virtual void drawPost(sf::RenderTarget& rt, sf::RenderStates states) const { }
 
 protected:
 	Room& getRoom();

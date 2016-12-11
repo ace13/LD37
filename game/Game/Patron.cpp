@@ -69,9 +69,15 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	rect.move(0.2f, 0.15f);
 	rect.setFillColor(HSVtoRGB(mHairHue, 0.5f, 0.35f));
 	rt.draw(rect, states);
+}
 
+void Patron::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
+{
 	if (mOrder && mOrderTime >= 0)
 	{
+		states.transform.translate({ 0.5f,0.5f }); 
+		states.transform *= getTransform();
+
 		sf::CircleShape bubble(2);
 		bubble.setScale(0.45f, 0.25f);
 		bubble.setFillColor(sf::Color::Transparent);
@@ -79,7 +85,7 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		bubble.setOutlineThickness(0.25f);
 		bubble.setPosition(0, -1.5f);
 
-		states.transform.translate(0.5f, 0.5F).rotate(-getRotation());
+		states.transform.translate({ 0.5f, 0.5f }).rotate(-getRotation());
 		rt.draw(bubble, states);
 
 		sf::ConvexShape point(3);
@@ -115,7 +121,7 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			sf::Text exclamation("!", Application::getApplication()->getDefaultFont(), 12);
 			exclamation.setScale(0.05f, 0.05f);
 			exclamation.setPosition(1.20f, -1.20f);
-			
+
 			const float anger = (5.f - mOrderTime) / 5.f;
 			sf::Color col = sf::Color::Black;
 			col.r = anger * 255;
