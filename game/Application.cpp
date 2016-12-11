@@ -186,7 +186,7 @@ void Application::init(int argc, char** argv)
 			aaLevel = 8;
 	}
 
-	mWindow.create(sf::VideoMode(700, 700), "LD37", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, aaLevel));
+	mWindow.create(sf::VideoMode(700, 700), "LD37 - Pub Master", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, aaLevel));
 }
 
 void Application::run()
