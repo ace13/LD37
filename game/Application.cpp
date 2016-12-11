@@ -131,7 +131,7 @@ void Application::init(int argc, char** argv)
 	mRoom.setTile({ 9, 10 }, Game::Room::Tile_Seat);
 	mRoom.setTile({ 10, 9 }, Game::Room::Tile_Seat);
 
-	mRoom.resetClock(60*8 - 30);
+//	mRoom.resetClock(60*8 - 30);
 	
 	/*
 	{
