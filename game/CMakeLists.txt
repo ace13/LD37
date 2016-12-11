@@ -4,6 +4,7 @@ set(LD37_HEADERS
 	Application.hpp
 	InputManager.hpp
 	Inputs.hpp
+	ParticleManager.hpp
 	ScriptManager.hpp
 
 	Game/Drink.hpp
@@ -18,6 +19,7 @@ set(LD37_SOURCES
 
 	Application.cpp
 	InputManager.cpp
+	ParticleManager.cpp
 	ScriptManager.cpp
 	
 	Game/Drink.cpp

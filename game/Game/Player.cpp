@@ -77,6 +77,11 @@ void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	{
 		auto& drink = *mCarried;
 
+		drink.setOrigin(0.5f, 0.5f);
+		drink.setScale(0.5f, 0.5f);
+		drink.setPosition(0.75f, 0);
+		drink.setRotation(6 * sin(Application::getApplication()->getTime() * 2));
+
 		rt.draw(drink, states);
 	}
 }
