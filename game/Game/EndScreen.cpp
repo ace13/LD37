@@ -31,7 +31,11 @@ void EndScreen::update(float dt)
 {
 	mTime += dt / 2;
 
+#if SFML_VERSION_MAJOR >= 2 && SFML_VERSION_MINOR >= 4
 	grayTone.setUniform("dt", std::min(mTime, 1.f));
+#else
+	grayTone.setParameter("dt", std::min(mTime, 1.f));
+#endif
 }
 void EndScreen::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
