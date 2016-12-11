@@ -43,6 +43,8 @@ public:
 	TileType getTile(const sf::Vector2u& pos) const;
 	void setTile(const sf::Vector2u& pos, TileType type);
 
+	void resetClock(float start = -30);
+	void depopulate();
 	void repopulate();
 
 	float getScale() const;
@@ -58,6 +60,9 @@ public:
 private:
 	sf::Vector2u mSize;
 	std::vector<TileType> mTiles;
+	
+	bool mStarted;
+	float mClock;
 
 	std::deque<std::unique_ptr<Object>> mObjects;
 };

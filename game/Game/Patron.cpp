@@ -28,11 +28,13 @@ void Patron::update(float dt)
 {
 	if (mOrder)
 	{
-		mOrderTime -= dt / (mPatience + (mOrder->getType() == Drink_Water));
+		mOrderTime -= dt / (mPatience + (mOrder->getType() == Drink_Water ? 4 : 0));
 
 		if (mOrderTime < 0 && mOrder)
 		{
-			getRoom().getPlayer()->costMoney(mOrder.get());
+			mOrderTime = 6;
+
+			getRoom().getPlayer()->costMoney(mOrder.get(), this);
 
 			mOrder.reset(nullptr);
 			mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
@@ -140,7 +142,7 @@ void Patron::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
 	}
 }
 
-float Patron::getTip(const Drink* drink)
+float Patron::getTip(const Drink* drink) const
 {
 	const float price = drink->getCost();
 	const float maxTip = price * 0.10f * (0.5f + (mPatience / 2.f));

@@ -8,6 +8,7 @@ set(LD37_HEADERS
 #	ScriptManager.hpp
 
 	Game/Drink.hpp
+	Game/EndScreen.hpp
 	Game/Object.hpp
 	Game/Patron.hpp
 	Game/Player.hpp
@@ -23,6 +24,7 @@ set(LD37_SOURCES
 #	ScriptManager.cpp
 	
 	Game/Drink.cpp
+	Game/EndScreen.cpp
 	Game/Object.cpp
 	Game/Patron.cpp
 	Game/Player.cpp

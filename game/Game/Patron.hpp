@@ -22,7 +22,7 @@ public:
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 	void drawPost(sf::RenderTarget& rt, sf::RenderStates states) const;
 
-	float getTip(const Drink*);
+	float getTip(const Drink*) const;
 
 	void giveOrder(const Drink*);
 	const Drink* getOrder() const;

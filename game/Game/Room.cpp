@@ -40,6 +40,8 @@ namespace
 }
 
 Room::Room()
+	: mStarted(false)
+	, mClock(-60)
 {
 	auto* ply = addObject<Player>();
 	ply->setPosition(0, 1);
@@ -96,12 +98,20 @@ void Room::setTile(const sf::Vector2u& pos, TileType type)
 	}
 }
 
-void Room::repopulate()
+void Room::resetClock(float start)
+{
+	mClock = start;
+}
+
+void Room::depopulate()
 {
 	auto it = std::remove_if(mObjects.begin(), mObjects.end(), [](auto& obj) { return dynamic_cast<Patron*>(obj.get()); });
 	if (it != mObjects.end())
 		mObjects.erase(it, mObjects.end());
+}
 
+void Room::repopulate()
+{
 	const auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
 	const auto maxSeats = 3 * (seats / 4);
 
@@ -153,6 +163,24 @@ void Room::scale(float scale)
 
 void Room::update(float dt)
 {
+	mClock += dt * 2;
+	if (!mStarted && mClock >= 0)
+	{
+		mStarted = true;
+		repopulate();
+	}
+
+	if (mClock >= 60 * 8)
+	{
+		depopulate();
+		resetClock();
+		mStarted = false;
+
+		if (getPlayer()->getMoney() <= 0)
+			Application::getApplication()->setState(Application::State_End);
+		else
+			getPlayer()->newDay();
+	}
 
 	for (auto& ptr : mObjects)
 	{
@@ -310,5 +338,17 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates baseState) const
 	sprintf(text, "%.2f", money);
 
 	sf::Text moneyText(std::string(text) + "$", Application::getApplication()->getDefaultFont());
-	rt.draw(moneyText, baseState);
+	rt.draw(moneyText);
+
+	if (mClock < 0)
+	{
+		sprintf(text, "Time left: %02i", int(abs(mClock / 2)));
+	}
+	else
+		sprintf(text, "%02i:%02i", (18 + (int(mClock) / 60)) % 24, (int(mClock) % 60));
+	moneyText.setString(std::string(text));
+	const auto tRect = moneyText.getGlobalBounds();
+	moneyText.setPosition(rt.getSize().x - tRect.width - 15, 0);
+
+	rt.draw(moneyText);
 }

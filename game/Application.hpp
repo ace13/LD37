@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/EndScreen.hpp"
 #include "Game/Room.hpp"
 
 #include "InputManager.hpp"
@@ -11,6 +12,12 @@
 class Application
 {
 public:
+	enum State
+	{
+		State_Game,
+		State_End
+	};
+
 	Application();
 	Application(const Application&) = delete;
 	Application(Application&&) = default;
@@ -19,6 +26,9 @@ public:
 	Application& operator=(const Application&) = delete;
 
 	static Application* getApplication();
+
+	State getState() const;
+	void setState(State state);
 
 	sf::Font& getDefaultFont();
 	const sf::Font& getDefaultFont() const;
@@ -36,7 +46,9 @@ private:
 	sf::RenderWindow mWindow;
 	sf::Font mDefaultFont;
 
+	State mState;
 	Game::Room mRoom;
+	Game::EndScreen mEndScreen;
 
 	float mDt, mTime;
 };

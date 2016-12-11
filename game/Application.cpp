@@ -15,6 +15,8 @@ namespace
 Application::Application()
 	: mDt(0)
 	, mTime(0)
+	, mState(State_Game)
+	, mEndScreen(&mRoom)
 {
 	gApplication = this;
 }
@@ -22,6 +24,15 @@ Application::Application()
 Application* Application::getApplication()
 {
 	return gApplication;
+}
+
+Application::State Application::getState() const
+{
+	return mState;
+}
+void Application::setState(State state)
+{
+	mState = state;
 }
 
 sf::Font& Application::getDefaultFont()
@@ -120,7 +131,7 @@ void Application::init(int argc, char** argv)
 	mRoom.setTile({ 9, 10 }, Game::Room::Tile_Seat);
 	mRoom.setTile({ 10, 9 }, Game::Room::Tile_Seat);
 
-	mRoom.repopulate();
+	mRoom.resetClock();
 	
 	/*
 	{
@@ -207,11 +218,17 @@ void Application::run()
 				mWindow.close();
 		}
 
-		mRoom.update(mDt);
+		if (mState == State_Game)
+			mRoom.update(mDt);
+		else
+			mEndScreen.update(mDt);
 
 		mWindow.clear();
 
 		mWindow.draw(mRoom);
+
+		if (mState == State_End)
+			mWindow.draw(mEndScreen);
 
 		mWindow.display();
 	}

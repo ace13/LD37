@@ -10,6 +10,11 @@ using namespace Game;
 
 Player::Player()
 	: mMoney(100)
+	, mMaxMoney(100)
+	, mDays(0)
+	, mDrinksMissed(0)
+	, mDrinksPoured(0)
+	, mDrinksServed(0)
 {
 
 }
@@ -48,8 +53,9 @@ void Player::update(float dt)
 	{
 		if (tile == Room::Tile_Sink)
 		{
-			costMoney(mCarried.get());
+			costMoney(mCarried.get(), this);
 			mCarried.reset(nullptr);
+			mDrinksPoured++;
 		}
 		else if (tile == Room::Tile_Seat || tile == Room::Tile_Stool)
 		{
@@ -60,6 +66,7 @@ void Player::update(float dt)
 				mMoney += target->getTip(mCarried.get());
 				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
+				mDrinksServed++;
 			}
 		}
 		else if (tile == Room::Tile_Bar || tile == Room::Tile_Table)
@@ -71,9 +78,13 @@ void Player::update(float dt)
 				mMoney += target->getTip(mCarried.get());
 				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
+				mDrinksServed++;
 			}
 		}
 	}
+
+	if (mMoney > mMaxMoney)
+		mMaxMoney = mMoney;
 }
 void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
@@ -102,12 +113,46 @@ void Player::drawPost(sf::RenderTarget& rt, sf::RenderStates states) const
 	}
 }
 
-void Player::costMoney(const Drink* drink)
+void Player::costMoney(const Drink* drink, const Object* source)
 {
-	mMoney -= drink->getCost();
+	auto* patron = dynamic_cast<const Patron*>(source);
+	if (patron)
+	{
+		mMoney -= drink->getCost() / 4.f;
+		mDrinksMissed++;
+	}
+	else
+		mMoney -= drink->getCost();
 }
 
 float Player::getMoney() const
 {
 	return mMoney;
+}
+
+void Player::newDay()
+{
+	mDays++;
+}
+
+int Player::getDays() const
+{
+	return mDays;
+}
+
+float Player::getMaxMoney() const
+{
+	return mMaxMoney;
+}
+int Player::getDrinksServed() const
+{
+	return mDrinksServed;
+}
+int Player::getDrinksPoured() const
+{
+	return mDrinksPoured;
+}
+int Player::getDrinksMissed() const
+{
+	return mDrinksMissed;
 }
