@@ -39,8 +39,36 @@ void EndScreen::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	background.setFillColor(sf::Color(0, 0, 0, std::min(1.f, mTime) * 180));
 	rt.draw(background);
 
+	auto& player = *mRoom->getPlayer();
+
 	// TODO:
-	sf::Text text("", Application::getApplication()->getDefaultFont());
+	sf::Text text("Game Over", Application::getApplication()->getDefaultFont());
+	text.move(15, 15);
+	rt.draw(text);
+
+	auto rect = text.getGlobalBounds();
+	text.move(0, rect.height + 64);
+	text.setString(std::string("You managed ") + std::to_string(player.getDays()) + " days.");
+	rt.draw(text);
+
+	rect = text.getGlobalBounds();
+	text.move(0, rect.height + 15);
+	text.setString(std::to_string(player.getDrinksServed()) + " drinks were served.");
+	rt.draw(text);
+
+	rect = text.getGlobalBounds();
+	text.move(0, rect.height + 8);
+	text.setString(std::to_string(player.getDrinksPoured()) + " drinks were poured away.");
+	rt.draw(text);
+
+	rect = text.getGlobalBounds();
+	text.move(0, rect.height + 5);
+	text.setString(std::to_string(player.getDrinksMissed()) + " customers didn't get their orders.");
+	rt.draw(text);
+
+	rect = text.getGlobalBounds();
+	text.move(0, rect.height + 32);
+	text.setString(std::string("Topping out at ") + std::to_string(int(player.getMaxMoney())) + "$");
 	rt.draw(text);
 }
 const sf::Shader* EndScreen::getGrayscale() const
