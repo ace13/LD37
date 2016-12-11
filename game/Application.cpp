@@ -24,6 +24,15 @@ Application* Application::getApplication()
 	return gApplication;
 }
 
+sf::Font& Application::getDefaultFont()
+{
+	return mDefaultFont;
+}
+const sf::Font& Application::getDefaultFont() const
+{
+	return mDefaultFont;
+}
+
 const InputManager& Application::getInputManager() const
 {
 	return mInputs;
@@ -32,7 +41,26 @@ const InputManager& Application::getInputManager() const
 void Application::init(int argc, char** argv)
 {
 //	mScripts.init();
-	
+
+	const std::string fonts[] = {
+#if WIN32
+		"C:\\Windows\\Fonts\\Arial.ttf"
+#else
+		"/usr/share/fonts/corefonts/arial.ttf",
+		"/usr/share/fonts/ttf-bitstream-vera/Vera.ttf",
+		"/usr/share/fonts/dejavu/DejaVuSans.ttf",
+		"/usr/share/fonts/liberation-fonts/LiberationSans-Regular.ttf",
+		"/usr/share/fonts/noto/NotoSans-Regular.ttf"
+#endif
+	};
+
+	auto it = std::begin(fonts);
+	do
+	{
+		if (mDefaultFont.loadFromFile(*it++))
+			break;
+	} while (it != std::end(fonts));
+
 	for (int i = 0; i < Input_Count; ++i)
 		mInputs.addInput(i);
 
@@ -53,7 +81,7 @@ void Application::init(int argc, char** argv)
 		{ sf::Keyboard::S }
 	};
 
-	mRoom.setPosition({ 375, 370 });
+	mRoom.setPosition({ 350, 350 });
 	mRoom.setSize({ 10, 10 });
 	mRoom.setScale(50);
 
@@ -129,7 +157,7 @@ void Application::init(int argc, char** argv)
 			aaLevel = 8;
 	}
 
-	mWindow.create(sf::VideoMode(1280, 720), "LD37", 7U, sf::ContextSettings(0, 0, aaLevel));
+	mWindow.create(sf::VideoMode(700, 700), "LD37", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, aaLevel));
 }
 
 void Application::run()

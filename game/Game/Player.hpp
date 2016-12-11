@@ -15,9 +15,13 @@ public:
 
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
+	
+	float getMoney() const;
 
 private:
 	std::unique_ptr<Drink> mCarried;
+
+	float mMoney;
 };
 
 }

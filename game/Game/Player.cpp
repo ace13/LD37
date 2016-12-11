@@ -41,13 +41,17 @@ void Player::update(float dt)
 	else
 	{
 		if (tile == Room::Tile_Sink)
+		{
+			mMoney -= mCarried->getCost();
 			mCarried.reset(nullptr);
+		}
 		else if (tile == Room::Tile_Seat || tile == Room::Tile_Stool)
 		{
 			auto* target = dynamic_cast<Patron*>(getRoom().getObject(newPos));
 			
 			if (target && target->getOrder() && target->getOrder()->getType() == mCarried->getType())
 			{
+				mMoney += target->getTip(mCarried.get());
 				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
 			}
@@ -58,6 +62,7 @@ void Player::update(float dt)
 			
 			if (target && target->getOrder() && target->getOrder()->getType() == mCarried->getType())
 			{
+				mMoney += target->getTip(mCarried.get());
 				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
 			}
@@ -86,3 +91,7 @@ void Player::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	}
 }
 
+float Player::getMoney() const
+{
+	return mMoney;
+}

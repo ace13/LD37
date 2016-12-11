@@ -23,10 +23,11 @@ public:
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
 	DrinkType getType() const;
+	float getCost() const;
 
 private:
 	DrinkType mType;
-	float mHue, mVal;
+	float mHue, mVal, mCost;
 };
 
 }

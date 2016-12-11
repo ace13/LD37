@@ -11,10 +11,17 @@ namespace Game
 class Patron : public Object
 {
 public:
+	enum
+	{
+		kOrderTime = 10
+	};
+
 	Patron();
 
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
+
+	float getTip(const Drink*);
 
 	void giveOrder(const Drink*);
 	const Drink* getOrder() const;

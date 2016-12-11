@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 using namespace Game;
 
@@ -32,7 +33,6 @@ namespace
 		const float dDot = dX * dX + dY * dY;
 		return sqrt(dDot);
 	}
-
 }
 
 Room::Room()
@@ -104,9 +104,9 @@ void Room::update(float dt)
 	}
 }
 
-void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
+void Room::draw(sf::RenderTarget& rt, sf::RenderStates baseState) const
 {
-	states.transform *= getTransform();
+	auto states = baseState.transform * getTransform();
 
 	auto circ = sf::CircleShape(4, 16);
 	circ.setFillColor(sf::Color::White);
@@ -240,4 +240,13 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		if (ptr)
 			rt.draw(*ptr, states);
 	}
+
+
+	auto money = dynamic_cast<Player*>(mObjects.front().get())->getMoney();
+
+	char text[256];
+	sprintf(text, "%.2f", money);
+
+	sf::Text moneyText(std::string(text) + "$", Application::getApplication()->getDefaultFont());
+	rt.draw(moneyText, baseState);
 }

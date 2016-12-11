@@ -6,6 +6,7 @@
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include <random>
 
@@ -24,13 +25,22 @@ Patron::Patron()
 
 void Patron::update(float dt)
 {
+	mOrderTime -= dt / mPatience;
+	
+	if (mOrderTime < 0 && mOrder)
+	{
+		// Cost player
+		mOrder.reset(nullptr);
+		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
+	}
+
 	if (mOrder)
 		return;
 
 	mOrderCooldown -= dt;
 	if (mOrderCooldown < 0)
 	{
-		mOrderTime = 1;
+		mOrderTime = kOrderTime;
 		mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())));
 	}
 }
@@ -92,10 +102,40 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		drink.setPosition(0.75f, -1.f);
 		drink.setScale(0.5f, 0.5f);
 
-		drink.setRotation(11.25 * cos(mOffset +  Application::getApplication()->getTime()));
+		drink.setRotation(11.25 * cos(mOffset + Application::getApplication()->getTime() * ((kOrderTime - mOrderTime) / kOrderTime) * 2));
 
 		rt.draw(drink, states);
+
+		if (mOrderTime <= 5)
+		{
+			sf::Text exclamation("!", Application::getApplication()->getDefaultFont(), 12);
+			exclamation.setScale(0.05f, 0.05f);
+			exclamation.setPosition(1.20f, -1.20f);
+			
+			const float anger = (5.f - mOrderTime) / 5.f;
+			sf::Color col = sf::Color::Black;
+			col.r = anger * 255;
+			exclamation.setFillColor(col);
+
+			const float time = Application::getApplication()->getTime() * anger * 10;
+			exclamation.move(cos(time + 45) * anger * 0.05f, sin(time) * anger * 0.05f);
+
+			{
+				auto rect = exclamation.getLocalBounds();
+				exclamation.setOrigin(rect.width / 2.f, rect.height / 2.f);
+			}
+
+			rt.draw(exclamation, states);
+		}
 	}
+}
+
+float Patron::getTip(const Drink* drink)
+{
+	const float price = drink->getCost();
+	const float maxTip = price * 0.10f * (0.5f + (mPatience / 2.f));
+
+	return maxTip;
 }
 
 void Patron::giveOrder(const Drink* drink)

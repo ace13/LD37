@@ -14,7 +14,17 @@ Drink::Drink(DrinkType type)
 	, mHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mVal(std::uniform_real_distribution<float>(0.1f, 0.8f)(std::random_device()))
 {
+	switch (mType)
+	{
+	case Drink_Water:
+		mCost = 0.1; break;
 
+	case Drink_Beer:
+		mCost = std::uniform_real_distribution<float>(5, 40)(std::random_device()); break;
+
+	case Drink_Cocktail:
+		mCost = std::uniform_real_distribution<float>(2, 60)(std::random_device()); break;
+	}
 }
 
 void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
@@ -112,4 +122,9 @@ void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 DrinkType Drink::getType() const
 {
 	return mType;
+}
+
+float Drink::getCost() const
+{
+	return mCost;
 }
