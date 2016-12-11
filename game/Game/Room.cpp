@@ -15,62 +15,14 @@ namespace
 		{ Room::Tile_Floor, sf::Color(0,0,0,0) },
 
 		{ Room::Tile_Bar, sf::Color(110, 107, 23) },
+		{ Room::Tile_Taps, sf::Color(110, 107, 23) },
+		{ Room::Tile_Sink, sf::Color(110, 107, 23) },
 		{ Room::Tile_Bottles, sf::Color(110, 107, 23) },
 		{ Room::Tile_Seat, sf::Color(171, 89, 16) },
 		{ Room::Tile_Stool, sf::Color(171, 89, 16) },
 		{ Room::Tile_Table, sf::Color(110, 107, 23) }
 	};
 
-	sf::Color HSVtoRGB(float fH, float fS, float fV) {
-		float fR, fG, fB;
-
-		float fC = fV * fS; // Chroma
-		float fHPrime = fmod(fH / 60.0, 6);
-		float fX = fC * (1 - fabs(fmod(fHPrime, 2) - 1));
-		float fM = fV - fC;
-
-		if (0 <= fHPrime && fHPrime < 1) {
-			fR = fC;
-			fG = fX;
-			fB = 0;
-		}
-		else if (1 <= fHPrime && fHPrime < 2) {
-			fR = fX;
-			fG = fC;
-			fB = 0;
-		}
-		else if (2 <= fHPrime && fHPrime < 3) {
-			fR = 0;
-			fG = fC;
-			fB = fX;
-		}
-		else if (3 <= fHPrime && fHPrime < 4) {
-			fR = 0;
-			fG = fX;
-			fB = fC;
-		}
-		else if (4 <= fHPrime && fHPrime < 5) {
-			fR = fX;
-			fG = 0;
-			fB = fC;
-		}
-		else if (5 <= fHPrime && fHPrime < 6) {
-			fR = fC;
-			fG = 0;
-			fB = fX;
-		}
-		else {
-			fR = 0;
-			fG = 0;
-			fB = 0;
-		}
-
-		fR += fM;
-		fG += fM;
-		fB += fM;
-
-		return sf::Color(fR * 255, fG * 255, fB * 255);
-	}
 }
 
 Room::Room()
@@ -89,6 +41,7 @@ void Room::setSize(const sf::Vector2u& size)
 {
 	mSize = size;
 	mTiles.resize(size.x * size.y);
+	setOrigin(size.x / 2, size.y / 2);
 }
 Room::TileType Room::getTile(const sf::Vector2u& pos) const
 {
@@ -143,8 +96,11 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	circ.setOrigin({ -1.f, -1.f });
 	auto rect = sf::RectangleShape(sf::Vector2f{ float(mSize.x), float(mSize.y) });
 	rect.setFillColor(sf::Color::White);
+	rect.setOutlineColor(sf::Color(63, 54, 21));
+	rect.setOutlineThickness(2.f);
 	rt.draw(rect, states);
 
+	rect.setOutlineColor(sf::Color::Transparent);
 	rect.setSize({ 1, 1 });
 	for (uint32_t i = 0; i < mSize.x * mSize.y; ++i)
 	{
@@ -158,6 +114,8 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		{
 		case Tile_Bar:
 		case Tile_Bottles:
+		case Tile_Taps:
+		case Tile_Sink:
 			toDraw = rect; break;
 
 		case Tile_Seat:
@@ -172,6 +130,37 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 
 		switch (tile)
 		{
+		case Tile_Sink: {
+			rect.setScale(0.75f, 0.75f);
+			rect.move(0.15f, 0.20f);
+			rect.setFillColor(sf::Color(80, 80, 80));
+			rt.draw(rect, states);
+
+			rect.setScale(0.65f, 0.65f);
+			rect.setFillColor(sf::Color(120, 120, 120));
+			rect.move(0.05f, 0.05f);
+			rt.draw(rect, states);
+
+			rect.setScale(1, 1);
+		} break;
+
+		case Tile_Taps: {
+			rect.setScale(0.1f, 0.5f);
+			rect.setFillColor(sf::Color(90, 90, 90));
+			rect.move(0.5f, 0.25f);
+
+			rect.setRotation(-25);
+			rt.draw(rect, states);
+
+			rect.setRotation(25);
+			rt.draw(rect, states);
+
+			rect.setRotation(0);
+			rt.draw(rect, states);
+			
+			rect.setScale(1, 1);
+		} break;
+
 		case Tile_Bottles: {
 			rect.setScale(0.1f, 0.1f);
 
@@ -195,7 +184,7 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 			{
 				h = i * 25 + j * 38 * phi;
 
-				circ.setFillColor(HSVtoRGB(h, s, v));
+				circ.setFillColor(Object::HSVtoRGB(h, s, v));
 				rt.draw(circ, states);
 				circ.move(0.1f, 0);
 			}

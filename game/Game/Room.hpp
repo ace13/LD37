@@ -21,6 +21,9 @@ public:
 
 		Tile_Bar,
 		Tile_Bottles,
+		Tile_Taps,
+		Tile_Sink,
+
 		Tile_Seat,
 		Tile_Stool,
 		Tile_Table,

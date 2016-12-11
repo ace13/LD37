@@ -5,16 +5,22 @@
 namespace Game
 {
 
-class Player : public Object
+class Patron : public Object
 {
 public:
-	Player() = default;
+	Patron();
 
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
 private:
-	
+	float mPatience,
+	      mShirtHue,
+	      mHairHue,
+	      mOrderTime;
+
+	int mOrder;
+
 };
 
 }

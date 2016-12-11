@@ -6,7 +6,9 @@ set(LD37_HEADERS
 	Inputs.hpp
 	ScriptManager.hpp
 
+	Game/Drink.hpp
 	Game/Object.hpp
+	Game/Patron.hpp
 	Game/Player.hpp
 	Game/Room.hpp
 )
@@ -18,7 +20,9 @@ set(LD37_SOURCES
 	InputManager.cpp
 	ScriptManager.cpp
 	
+	Game/Drink.cpp
 	Game/Object.cpp
+	Game/Patron.cpp
 	Game/Player.cpp
 	Game/Room.cpp
 

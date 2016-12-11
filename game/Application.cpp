@@ -1,6 +1,8 @@
 #include "Application.hpp"
 #include "Inputs.hpp"
 
+#include "Game/Patron.hpp"
+
 #include <SFML/Window/Event.hpp>
 
 #include <chrono>
@@ -51,9 +53,9 @@ void Application::init(int argc, char** argv)
 		{ sf::Keyboard::S }
 	};
 
-	mRoom.setPosition({ 100, 100 });
+	mRoom.setPosition({ 400, 400 });
 	mRoom.setSize({ 10, 10 });
-	mRoom.setScale(25);
+	mRoom.setScale(50);
 
 	for (unsigned int i = 0; i < 10; ++i)
 	{
@@ -65,10 +67,24 @@ void Application::init(int argc, char** argv)
 		mRoom.setTile({ i, 4 }, Game::Room::Tile_Seat);
 	}
 
-	mRoom.setTile({ 6, 0 }, Game::Room::Tile_Bar);
-	mRoom.setTile({ 7, 0 }, Game::Room::Tile_Bar);
+	mRoom.setTile({ 4, 0 }, Game::Room::Tile_Sink);
+	mRoom.setTile({ 5, 0 }, Game::Room::Tile_Taps);
+	mRoom.setTile({ 6, 0 }, Game::Room::Tile_Taps);
+	mRoom.setTile({ 7, 0 }, Game::Room::Tile_Taps);
 	mRoom.setTile({ 8, 0 }, Game::Room::Tile_Bar);
 	mRoom.setTile({ 9, 0 }, Game::Room::Tile_Bar);
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(2, 4);
+		pat.setRotation(-90);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(8, 4);
+		pat.setRotation(-90);
+	}
 
 	mWindow.create(sf::VideoMode(1280, 720), "LD37");
 }
