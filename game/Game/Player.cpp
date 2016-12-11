@@ -46,15 +46,21 @@ void Player::update(float dt)
 		{
 			auto* target = dynamic_cast<Patron*>(getRoom().getObject(newPos));
 			
-			if (target && target->getOrder().getType() == mCarried->getType())
+			if (target && target->getOrder() && target->getOrder()->getType() == mCarried->getType())
+			{
+				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
+			}
 		}
 		else if (tile == Room::Tile_Bar || tile == Room::Tile_Table)
 		{
 			auto* target = dynamic_cast<Patron*>(getRoom().getObject(pos + delta * 2u));
 			
-			if (target && target->getOrder().getType() == mCarried->getType())
+			if (target && target->getOrder() && target->getOrder()->getType() == mCarried->getType())
+			{
+				target->giveOrder(mCarried.get());
 				mCarried.reset(nullptr);
+			}
 		}
 	}
 }

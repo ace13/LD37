@@ -16,7 +16,7 @@ Patron::Patron()
 	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mHairHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mOrderTime(1)
-	, mOrder(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())))
+	, mOrder(std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device()))))
 	, mOffset(std::uniform_real_distribution<float>(0, 10)(std::random_device()))
 {
 	setOrigin(0.5f, 0.5f);
@@ -47,7 +47,7 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	rect.setFillColor(HSVtoRGB(mHairHue, 0.5f, 0.35f));
 	rt.draw(rect, states);
 
-	if (mOrderTime >= 0)
+	if (mOrder && mOrderTime >= 0)
 	{
 		sf::CircleShape bubble(2);
 		bubble.setScale(0.45f, 0.25f);
@@ -78,7 +78,7 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		bubble.setFillColor(sf::Color::White);
 		rt.draw(bubble, states);
 
-		Drink drink(mOrder);
+		auto& drink = *mOrder;
 		drink.setOrigin(0.5f, 0.5f);
 		drink.setPosition(0.75f, -1.f);
 		drink.setScale(0.5f, 0.5f);
@@ -89,7 +89,13 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	}
 }
 
-const Drink& Patron::getOrder() const
+void Patron::giveOrder(const Drink* drink)
 {
-	return mOrder;
+	if (mOrder && drink && mOrder->getType() == drink->getType())
+		mOrder.reset(nullptr);
+}
+
+const Drink* Patron::getOrder() const
+{
+	return mOrder.get();
 }

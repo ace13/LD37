@@ -3,6 +3,8 @@
 #include "Object.hpp"
 #include "Drink.hpp"
 
+#include <memory>
+
 namespace Game
 {
 
@@ -14,7 +16,8 @@ public:
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
-	const Drink& getOrder() const;
+	void giveOrder(const Drink*);
+	const Drink* getOrder() const;
 
 private:
 	float mPatience,
@@ -24,7 +27,7 @@ private:
 
 	float mOffset;
 
-	Drink mOrder;
+	std::unique_ptr<Drink> mOrder;
 
 };
 
