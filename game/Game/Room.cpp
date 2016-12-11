@@ -189,9 +189,9 @@ void Room::update(float dt)
 	}
 }
 
-void Room::draw(sf::RenderTarget& rt, sf::RenderStates baseState) const
+void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
-	auto states = baseState.transform * getTransform();
+	states.transform *= getTransform();
 
 	auto circ = sf::CircleShape(4, 16);
 	circ.setFillColor(sf::Color::White);

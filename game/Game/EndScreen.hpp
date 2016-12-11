@@ -15,6 +15,8 @@ public:
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
+	const sf::Shader* getGrayscale() const;
+
 private:
 	float mTime;
 	Room* mRoom;

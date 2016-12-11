@@ -131,7 +131,7 @@ void Application::init(int argc, char** argv)
 	mRoom.setTile({ 9, 10 }, Game::Room::Tile_Seat);
 	mRoom.setTile({ 10, 9 }, Game::Room::Tile_Seat);
 
-	mRoom.resetClock();
+	mRoom.resetClock(60*8 - 30);
 	
 	/*
 	{
@@ -225,7 +225,11 @@ void Application::run()
 
 		mWindow.clear();
 
-		mWindow.draw(mRoom);
+		sf::RenderStates states;
+		if (mState == State_End)
+			states.shader = mEndScreen.getGrayscale();
+
+		mWindow.draw(mRoom, states);
 
 		if (mState == State_End)
 			mWindow.draw(mEndScreen);
