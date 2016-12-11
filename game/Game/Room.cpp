@@ -102,8 +102,10 @@ void Room::repopulate()
 	if (it != mObjects.end())
 		mObjects.erase(it, mObjects.end());
 
-	auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
-	auto toFill = std::uniform_int_distribution<int>(1, seats)(std::random_device());
+	const auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
+	const auto maxSeats = 3 * (seats / 4);
+
+	auto toFill = std::uniform_int_distribution<int>(1, maxSeats)(std::random_device());
 
 	auto xDist = std::uniform_int_distribution<int>(0, mSize.x);
 	auto yDist = std::uniform_int_distribution<int>(0, mSize.y);
@@ -114,10 +116,25 @@ void Room::repopulate()
 		do
 		{
 			pos = sf::Vector2u(xDist(std::random_device()), yDist(std::random_device()));
-		} while (getTile(pos) != Tile_Seat && getTile(pos) != Tile_Stool && !getObject(pos));
+			const auto tile = getTile(pos);
+			if ((tile == Tile_Seat || tile == Tile_Stool) && !getObject(pos))
+				break;
+		} while (true);
 
 		auto* patron = addObject<Patron>();
 		patron->setPosition(sf::Vector2f(pos));
+
+		const auto tileTop = getTile(pos - sf::Vector2u{ 0, 1 }),
+		           tileLeft = getTile(pos - sf::Vector2u{ 1, 0 }),
+		           tileBottom = getTile(pos + sf::Vector2u{ 0, 1 }),
+		           tileRight = getTile(pos + sf::Vector2u{ 1, 0 });
+
+		if (tileTop == Tile_Table || tileTop == Tile_Bar)
+			patron->setRotation(-90);
+		else if (tileLeft == Tile_Table || tileLeft == Tile_Bar)
+			patron->setRotation(180);
+		else if (tileBottom == Tile_Table || tileBottom == Tile_Bar)
+			patron->setRotation(90);
 	}
 }
 
