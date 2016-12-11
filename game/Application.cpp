@@ -144,12 +144,13 @@ void Application::run()
 
 	while (mWindow.isOpen())
 	{
-		dt = last - tick;
+		tick = clock::now();
+
+		dt = tick - last;
 		mDt = std::chrono::duration<float>(dt).count();
 		mTime += mDt;
 		
 		last = tick;
-		tick = clock::now();
 
 		mInputs.tick();
 		while (mWindow.pollEvent(ev))

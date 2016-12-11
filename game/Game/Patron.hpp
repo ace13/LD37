@@ -23,7 +23,8 @@ private:
 	float mPatience,
 	      mShirtHue,
 	      mHairHue,
-	      mOrderTime;
+	      mOrderTime,
+	      mOrderCooldown;
 
 	float mOffset;
 

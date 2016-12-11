@@ -3,10 +3,6 @@ project(LD37)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(CMAKE_DEBUG_POSTFIX          "d")
-set(CMAKE_MINSIZEREL_POSTFIX     "s")
-set(CMAKE_RELWITHDEBINFO_POSTFIX "rd")
-
 set(OUTPUT_BINDIR ${PROJECT_BINARY_DIR}/bin)
 file(MAKE_DIRECTORY ${OUTPUT_BINDIR})
 
@@ -36,6 +32,10 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/deps/ASX
 	${PROJECT_SOURCE_DIR}/deps/Kunlaboro/include
 )
+
+set(CMAKE_DEBUG_POSTFIX          "d")
+set(CMAKE_MINSIZEREL_POSTFIX     "s")
+set(CMAKE_RELWITHDEBINFO_POSTFIX "rd")
 
 add_subdirectory(deps/ASX)
 add_subdirectory(deps/Kunlaboro)

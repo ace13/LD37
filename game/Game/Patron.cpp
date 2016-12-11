@@ -15,8 +15,8 @@ Patron::Patron()
 	: mPatience(std::uniform_real_distribution<float>(1, 5)(std::random_device()))
 	, mShirtHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
 	, mHairHue(std::uniform_real_distribution<float>(0, 360)(std::random_device()))
-	, mOrderTime(1)
-	, mOrder(std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device()))))
+	, mOrderTime(0)
+	, mOrderCooldown(std::uniform_real_distribution<float>(1, 20)(std::random_device()))
 	, mOffset(std::uniform_real_distribution<float>(0, 10)(std::random_device()))
 {
 	setOrigin(0.5f, 0.5f);
@@ -24,6 +24,15 @@ Patron::Patron()
 
 void Patron::update(float dt)
 {
+	if (mOrder)
+		return;
+
+	mOrderCooldown -= dt;
+	if (mOrderCooldown < 0)
+	{
+		mOrderTime = 1;
+		mOrder = std::make_unique<Drink>(DrinkType(std::uniform_int_distribution<int>(Drink_Beer, Drink_Water)(std::random_device())));
+	}
 }
 
 void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
@@ -92,7 +101,10 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 void Patron::giveOrder(const Drink* drink)
 {
 	if (mOrder && drink && mOrder->getType() == drink->getType())
+	{
 		mOrder.reset(nullptr);
+		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(std::random_device());
+	}
 }
 
 const Drink* Patron::getOrder() const
