@@ -40,6 +40,9 @@ void Patron::update(float dt)
 
 			mOrder.reset(nullptr);
 			mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(Random());
+
+			if (std::uniform_real_distribution<float>(0.f, 1.f)(Random()) > 0.9f)
+				getRoom().removeObject(this);
 		}
 	}
 	else
@@ -169,6 +172,9 @@ void Patron::giveOrder(const Drink* drink)
 	{
 		mOrder.reset(nullptr);
 		mOrderCooldown = std::uniform_real_distribution<float>(1, 20)(Random());
+
+		if (std::uniform_real_distribution<float>(0.f, 1.f)(Random()) > 0.75f)
+			getRoom().removeObject(this);
 	}
 }
 

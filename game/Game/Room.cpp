@@ -42,6 +42,7 @@ namespace
 Room::Room()
 	: mStarted(false)
 	, mClock(-60)
+	, mPopulateCD(0)
 {
 	auto* ply = addObject<Player>();
 	ply->setPosition(0, 1);
@@ -112,10 +113,21 @@ void Room::depopulate()
 
 void Room::repopulate()
 {
-	const auto seats = std::count_if(mTiles.begin(), mTiles.end(), [](auto t) { return t == Tile_Seat || t == Tile_Stool; });
-	const auto maxSeats = 3 * (seats / 4);
+	int i = 0;
+	const auto seats = std::count_if(mTiles.begin(), mTiles.end(), [&i, this](auto t) {
+		const int j = i++;
 
-	auto toFill = std::uniform_int_distribution<int>(1, maxSeats)(Object::Random());
+		const uint32_t x = j % mSize.x,
+		               y = j / mSize.x;
+
+		return (t == Tile_Seat || t == Tile_Stool) && !getObject({ x, y });
+	});
+	const auto maxSeats = 3 * (seats / 4);
+	
+	if (maxSeats <= 1)
+		return;
+
+	auto toFill = std::uniform_int_distribution<int>(!mStarted, maxSeats)(Object::Random());
 
 	auto xDist = std::uniform_int_distribution<int>(0, mSize.x);
 	auto yDist = std::uniform_int_distribution<int>(0, mSize.y);
@@ -164,10 +176,21 @@ void Room::scale(float scale)
 void Room::update(float dt)
 {
 	mClock += dt * 2;
+
 	if (!mStarted && mClock >= 0)
 	{
-		mStarted = true;
 		repopulate();
+		mStarted = true;
+		mPopulateCD = std::uniform_real_distribution<float>(15, 60)(Object::Random());
+	}
+
+	if (mStarted)
+		mPopulateCD -= dt;
+
+	if (mPopulateCD < 0)
+	{
+		repopulate();
+		mPopulateCD = std::uniform_real_distribution<float>(15, 60)(Object::Random());
 	}
 
 	if (mClock >= 60 * 8)
@@ -189,6 +212,10 @@ void Room::update(float dt)
 		if (ptr)
 			ptr->update(dt);
 	}
+
+	for (auto& it : mToDelete)
+		mObjects.erase(it);
+	mToDelete.clear();
 }
 
 void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
@@ -211,10 +238,10 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	rect.setSize({ 1, 1 });
 	for (uint32_t i = 0; i < mSize.x * mSize.y; ++i)
 	{
-		auto x = i % mSize.x,
-		     y = i / mSize.x;
+		const auto x = i % mSize.x,
+		           y = i / mSize.x;
 
-		auto tile = mTiles[i];
+		const auto tile = mTiles[i];
 
 		if (tile == Tile_Floor)
 			continue;
@@ -353,4 +380,11 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	moneyText.setPosition(rt.getSize().x - tRect.width - 15, 0);
 
 	rt.draw(moneyText);
+}
+
+void Room::removeObject(Object* obj)
+{
+	auto it = std::find_if(mObjects.begin(), mObjects.end(), [obj](auto& it) { return it.get() == obj; });
+	if (it != mObjects.end())
+		mToDelete.push_back(it);
 }

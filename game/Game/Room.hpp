@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 
 #include <deque>
+#include <list>
 #include <memory>
 #include <vector>
 
@@ -56,15 +57,17 @@ public:
 
 	template<typename T, typename... Args>
 	T* addObject(Args&&...);
+	void removeObject(Object* obj);
 
 private:
 	sf::Vector2u mSize;
 	std::vector<TileType> mTiles;
 	
 	bool mStarted;
-	float mClock;
+	float mClock, mPopulateCD;
 
 	std::deque<std::unique_ptr<Object>> mObjects;
+	std::list<std::deque<std::unique_ptr<Object>>::iterator> mToDelete;
 };
 
 }
