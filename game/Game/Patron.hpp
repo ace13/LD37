@@ -14,6 +14,8 @@ public:
 	void update(float dt);
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
+	const Drink& getOrder() const;
+
 private:
 	float mPatience,
 	      mShirtHue,

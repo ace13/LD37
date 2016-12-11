@@ -88,3 +88,8 @@ void Patron::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		rt.draw(drink, states);
 	}
 }
+
+const Drink& Patron::getOrder() const
+{
+	return mOrder;
+}

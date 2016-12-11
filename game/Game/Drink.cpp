@@ -20,7 +20,8 @@ Drink::Drink(DrinkType type)
 void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-
+	
+	// TODO: Liquid leveling
 	switch (mType)
 	{
 	case Drink_Beer: {
@@ -102,4 +103,9 @@ void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 
 	} break;
 	}
+}
+
+DrinkType Drink::getType() const
+{
+	return mType;
 }

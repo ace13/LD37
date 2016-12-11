@@ -36,6 +36,7 @@ public:
 	const sf::Vector2u& getSize() const;
 	void setSize(const sf::Vector2u& size);
 
+	Object* getObject(const sf::Vector2u& pos) const;
 	TileType getTile(const sf::Vector2u& pos) const;
 	void setTile(const sf::Vector2u& pos, TileType type);
 

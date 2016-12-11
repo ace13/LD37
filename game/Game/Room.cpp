@@ -23,6 +23,16 @@ namespace
 		{ Room::Tile_Table, sf::Color(110, 107, 23) }
 	};
 
+	template<typename T, typename U>
+	float distance(const sf::Vector2<T>& a, const sf::Vector2<U>& b)
+	{
+		const float dX = b.x - a.x;
+		const float dY = b.y - a.y;
+
+		const float dDot = dX * dX + dY * dY;
+		return sqrt(dDot);
+	}
+
 }
 
 Room::Room()
@@ -42,6 +52,14 @@ void Room::setSize(const sf::Vector2u& size)
 	mSize = size;
 	mTiles.resize(size.x * size.y);
 	setOrigin(size.x / 2, size.y / 2);
+}
+Object* Room::getObject(const sf::Vector2u& pos) const
+{
+	for (auto& obj : mObjects)
+		if (distance(pos, obj->getPosition()) <= 0.5)
+			return obj.get();
+
+	return nullptr;
 }
 Room::TileType Room::getTile(const sf::Vector2u& pos) const
 {

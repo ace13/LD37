@@ -22,6 +22,8 @@ public:
 
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const;
 
+	DrinkType getType() const;
+
 private:
 	DrinkType mType;
 	float mHue, mVal;
