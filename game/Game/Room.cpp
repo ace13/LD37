@@ -112,10 +112,12 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	circ.setFillColor(sf::Color::White);
 	circ.setScale(0.1f, 0.1f);
 	circ.setOrigin({ -1.f, -1.f });
+
 	auto rect = sf::RectangleShape(sf::Vector2f{ float(mSize.x), float(mSize.y) });
 	rect.setFillColor(sf::Color::White);
 	rect.setOutlineColor(sf::Color(63, 54, 21));
 	rect.setOutlineThickness(2.f);
+
 	rt.draw(rect, states);
 
 	rect.setOutlineColor(sf::Color::Transparent);
@@ -126,28 +128,48 @@ void Room::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		     y = i / mSize.x;
 
 		auto tile = mTiles[i];
-		sf::Shape& toDraw = rect;
 
+		if (tile == Tile_Floor)
+			continue;
+
+		sf::Shape* choice = nullptr;
 		switch (tile)
 		{
 		case Tile_Bar:
 		case Tile_Bottles:
 		case Tile_Taps:
 		case Tile_Sink:
-			toDraw = rect; break;
+			choice = &rect; break;
 
 		case Tile_Seat:
 		case Tile_Stool:
 		case Tile_Table:
-			toDraw = circ; break;
+			choice = &circ; break;
 		}
 
+		sf::Shape& toDraw = *choice;
 		toDraw.setFillColor(TileColors[tile]);
 		toDraw.setPosition(x, y);
-		rt.draw(rect, states);
+
+		if (tile == Tile_Table)
+		{
+			toDraw.setScale(0.15f, 0.15f);
+			toDraw.move(-0.25f, -0.25f);
+		}
+
+		rt.draw(toDraw, states);
 
 		switch (tile)
 		{
+		case Tile_Table: {
+			circ.setScale(0.13f, 0.13f);
+			circ.move(0.1f, 0.1f);
+			circ.setFillColor(sf::Color(136, 109, 16));
+			rt.draw(circ, states);
+
+			circ.setScale(0.1f, 0.1f);
+		} break;
+
 		case Tile_Sink: {
 			rect.setScale(0.75f, 0.75f);
 			rect.move(0.15f, 0.20f);

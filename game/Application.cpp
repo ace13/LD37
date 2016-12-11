@@ -64,7 +64,7 @@ void Application::init(int argc, char** argv)
 
 		mRoom.setTile({ i, 0 }, Game::Room::Tile_Bottles);
 		mRoom.setTile({ i, 3 }, Game::Room::Tile_Bar);
-		mRoom.setTile({ i, 4 }, Game::Room::Tile_Seat);
+		mRoom.setTile({ i, 4 }, Game::Room::Tile_Stool);
 	}
 
 	mRoom.setTile({ 4, 0 }, Game::Room::Tile_Sink);
@@ -73,6 +73,10 @@ void Application::init(int argc, char** argv)
 	mRoom.setTile({ 7, 0 }, Game::Room::Tile_Taps);
 	mRoom.setTile({ 8, 0 }, Game::Room::Tile_Bar);
 	mRoom.setTile({ 9, 0 }, Game::Room::Tile_Bar);
+
+	mRoom.setTile({ 1, 8 }, Game::Room::Tile_Table);
+	mRoom.setTile({ 0, 8 }, Game::Room::Tile_Seat);
+	mRoom.setTile({ 1, 9 }, Game::Room::Tile_Seat);
 
 	{
 		auto& pat = *mRoom.addObject<Game::Patron>();
@@ -101,6 +105,18 @@ void Application::init(int argc, char** argv)
 	{
 		auto& pat = *mRoom.addObject<Game::Patron>();
 		pat.setPosition(8, 4);
+		pat.setRotation(-90);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(0, 8);
+		pat.setRotation(0);
+	}
+
+	{
+		auto& pat = *mRoom.addObject<Game::Patron>();
+		pat.setPosition(1, 9);
 		pat.setRotation(-90);
 	}
 	

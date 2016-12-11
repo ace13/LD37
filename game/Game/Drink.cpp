@@ -20,7 +20,7 @@ Drink::Drink(DrinkType type)
 void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-	
+
 	// TODO: Liquid leveling
 	switch (mType)
 	{
@@ -41,7 +41,9 @@ void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		beer.setPoint(2, { 0.75f, 1 });
 		beer.setPoint(3, { 0.75f, 0.25f });
 
-		beer.setFillColor(Object::HSVtoRGB(45, 0.9f, mVal));
+		auto color = Object::HSVtoRGB(45, 0.9f, mVal);
+		color.a = 180 + (0.8f - mVal) * 107;
+		beer.setFillColor(color);
 
 		rt.draw(beer, states);
 	} break;
@@ -71,7 +73,9 @@ void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		glass.setOutlineThickness(0);
 		glass.setOutlineColor(sf::Color::Transparent);
 
-		glass.setFillColor(Object::HSVtoRGB(mHue, 0.5f, 0.95f));
+		auto color = Object::HSVtoRGB(mHue, 0.5f, 0.95f);
+		color.a = 200;
+		glass.setFillColor(color);
 
 		rt.draw(glass, states);
 	} break;
@@ -95,7 +99,7 @@ void Drink::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 		glass.setPoint(2, { 0.9f, 1 });
 		glass.setPoint(3, { 0.975f, 0.25f });
 		
-		glass.setFillColor(sf::Color(105, 185, 240, 120));
+		glass.setFillColor(sf::Color(105, 185, 240, 200));
 		glass.setOutlineColor(sf::Color::Transparent);
 		glass.setOutlineThickness(0);
 
