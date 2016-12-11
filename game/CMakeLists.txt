@@ -1,11 +1,11 @@
 set(LD37_HEADERS
-	AS_SFML.hpp
+#	AS_SFML.hpp
 
 	Application.hpp
 	InputManager.hpp
 	Inputs.hpp
 	ParticleManager.hpp
-	ScriptManager.hpp
+#	ScriptManager.hpp
 
 	Game/Drink.hpp
 	Game/Object.hpp
@@ -15,12 +15,12 @@ set(LD37_HEADERS
 )
 
 set(LD37_SOURCES
-	AS_SFML.cpp
+#	AS_SFML.cpp
 
 	Application.cpp
 	InputManager.cpp
 	ParticleManager.cpp
-	ScriptManager.cpp
+#	ScriptManager.cpp
 	
 	Game/Drink.cpp
 	Game/Object.cpp
@@ -40,18 +40,18 @@ if (WIN32)
 	set(SFML_MAIN main)
 endif()
 
-find_package(SFML 2 REQUIRED COMPONENTS audio graphics system window network ${SFML_MAIN})
-find_package(Angelscript REQUIRED)
+find_package(SFML 2 REQUIRED COMPONENTS audio graphics system window ${SFML_MAIN})
+#find_package(Angelscript REQUIRED)
 
 include_directories(
-	${Angelscript_INCLUDE_DIR}
+#	${Angelscript_INCLUDE_DIR}
 	${SFML_INCLUDE_DIR}
 )
 
 add_executable(LD37 ${LD37_HEADERS} ${LD37_SOURCES} ${LD37_ASX})
 target_link_libraries(LD37
-	LD37_ASX
-	${Angelscript_LIBRARIES}
+#	LD37_ASX
+#	${Angelscript_LIBRARIES}
 	${SFML_LIBRARIES}
 )
 set_target_properties(LD37 PROPERTIES

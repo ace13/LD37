@@ -31,7 +31,7 @@ const InputManager& Application::getInputManager() const
 
 void Application::init(int argc, char** argv)
 {
-	mScripts.init();
+//	mScripts.init();
 	
 	for (int i = 0; i < Input_Count; ++i)
 		mInputs.addInput(i);

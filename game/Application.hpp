@@ -3,7 +3,7 @@
 #include "Game/Room.hpp"
 
 #include "InputManager.hpp"
-#include "ScriptManager.hpp"
+//#include "ScriptManager.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -29,7 +29,7 @@ public:
 
 private:
 	InputManager mInputs;
-	ScriptManager mScripts;
+//	ScriptManager mScripts;
 	sf::RenderWindow mWindow;
 
 	Game::Room mRoom;

@@ -29,7 +29,7 @@ if(MSVC)
 endif()
 
 include_directories(
-	${PROJECT_SOURCE_DIR}/deps/ASX
+#	${PROJECT_SOURCE_DIR}/deps/ASX
 	${PROJECT_SOURCE_DIR}/deps/Kunlaboro/include
 )
 
@@ -37,6 +37,6 @@ set(CMAKE_DEBUG_POSTFIX          "d")
 set(CMAKE_MINSIZEREL_POSTFIX     "s")
 set(CMAKE_RELWITHDEBINFO_POSTFIX "rd")
 
-add_subdirectory(deps/ASX)
-add_subdirectory(deps/Kunlaboro)
+#add_subdirectory(deps/ASX)
+#add_subdirectory(deps/Kunlaboro)
 add_subdirectory(game)
